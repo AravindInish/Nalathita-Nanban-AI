@@ -1,0 +1,2938 @@
+
+<style>
+  :root {
+    --font-sans: "Segoe UI", "Noto Sans Tamil", sans-serif;
+    --bg: #edf6f3;
+    --surface-0: #f5fbf9;
+    --surface-1: rgba(255,255,255,0.78);
+    --surface-2: rgba(255,255,255,0.9);
+    --text-primary: #15251f;
+    --text-secondary: #4a5f59;
+    --text-muted: #778a84;
+    --text-accent: #186b52;
+    --bg-success: rgba(32, 175, 120, 0.12);
+    --bg-accent: rgba(31, 120, 255, 0.12);
+    --bg-warning: rgba(244, 180, 48, 0.12);
+    --bg-danger: rgba(217, 69, 55, 0.08);
+    --fill-disabled: rgba(17, 24, 39, 0.12);
+    --border: rgba(18, 39, 30, 0.08);
+    --border-strong: rgba(18, 39, 30, 0.15);
+    --border-warning: rgba(180, 122, 12, 0.18);
+    --border-danger: rgba(166, 43, 36, 0.18);
+    --text-warning: #8d640c;
+    --text-danger: #8f2a22;
+    --shadow-soft: 0 10px 32px rgba(17, 24, 39, 0.07);
+    --radius: 10px;
+  }
+
+  body[data-theme="ocean"] {
+    --bg: #ecf7ff;
+    --surface-0: #f5fbff;
+    --surface-1: rgba(255,255,255,0.8);
+    --surface-2: rgba(255,255,255,0.94);
+    --text-primary: #122938;
+    --text-secondary: #40657d;
+    --text-muted: #6d93a6;
+    --text-accent: #0d6c8c;
+    --bg-success: rgba(32, 162, 196, 0.12);
+    --bg-accent: rgba(82, 123, 255, 0.12);
+    --bg-warning: rgba(255, 196, 90, 0.12);
+    --bg-danger: rgba(229, 84, 84, 0.08);
+    --border: rgba(17, 43, 62, 0.08);
+    --border-strong: rgba(17, 43, 62, 0.14);
+    --text-warning: #8f6d00;
+    --text-danger: #912b2a;
+  }
+
+  body[data-theme="sunset"] {
+    --bg: #fff4ec;
+    --surface-0: #fffaf7;
+    --surface-1: rgba(255,255,255,0.76);
+    --surface-2: rgba(255,255,255,0.9);
+    --text-primary: #35231b;
+    --text-secondary: #70514a;
+    --text-muted: #946f5e;
+    --text-accent: #ad4e25;
+    --bg-success: rgba(233, 104, 62, 0.12);
+    --bg-accent: rgba(204, 93, 72, 0.12);
+    --bg-warning: rgba(252, 182, 82, 0.14);
+    --bg-danger: rgba(204, 62, 62, 0.08);
+    --border: rgba(68, 39, 24, 0.08);
+    --border-strong: rgba(68, 39, 24, 0.15);
+    --text-warning: #915c07;
+    --text-danger: #942b1d;
+  }
+
+  body[data-theme="midnight"] {
+    --bg: #111827;
+    --surface-0: #0f172a;
+    --surface-1: rgba(17, 24, 39, 0.8);
+    --surface-2: rgba(15, 23, 42, 0.95);
+    --text-primary: #e5eefb;
+    --text-secondary: #b1bfd3;
+    --text-muted: #7c8ea5;
+    --text-accent: #7cc8ff;
+    --bg-success: rgba(110, 231, 183, 0.12);
+    --bg-accent: rgba(96, 165, 250, 0.14);
+    --bg-warning: rgba(251, 191, 36, 0.12);
+    --bg-danger: rgba(248, 113, 113, 0.08);
+    --fill-disabled: rgba(148, 163, 184, 0.2);
+    --border: rgba(148, 163, 184, 0.15);
+    --border-strong: rgba(148, 163, 184, 0.22);
+    --border-warning: rgba(251, 191, 36, 0.2);
+    --border-danger: rgba(248, 113, 113, 0.2);
+    --text-warning: #facc15;
+    --text-danger: #fca5a5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background:
+      radial-gradient(circle at top left, rgba(41, 182, 126, 0.18), transparent 18%),
+      radial-gradient(circle at top right, rgba(67, 116, 255, 0.10), transparent 24%),
+      radial-gradient(circle at bottom left, rgba(239, 128, 80, 0.08), transparent 18%),
+      var(--bg);
+    color: var(--text-primary);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(rgba(17,24,39,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(17,24,39,0.02) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
+    opacity: 0.9;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .app { min-height: 100vh; display: flex; flex-direction: column; }
+
+  .header {
+    background: rgba(255,255,255,0.68);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 1.25rem;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #25b68a, #0f7f66);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 17px;
+    box-shadow: 0 8px 18px rgba(31, 163, 119, 0.24);
+  }
+  .logo-text { display: flex; flex-direction: column; }
+  .logo-title { font-size: 14px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+  .logo-sub { font-size: 11px; color: var(--text-secondary); }
+  .nav { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
+  .nav-btn {
+    padding: 8px 12px; border-radius: 10px; border: none;
+    background: transparent; color: var(--text-secondary);
+    font-size: 13px; cursor: pointer; transition: all 0.18s ease;
+  }
+  .nav-btn:hover { background: var(--surface-1); color: var(--text-primary); }
+  .nav-btn.active { background: var(--bg-success); color: var(--text-accent); font-weight: 600; }
+
+  .theme-switcher {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface-1);
+    border: 0.5px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 8px;
+    margin: 0 0.5rem;
+  }
+  .theme-dot {
+    width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.7);
+    cursor: pointer; box-shadow: inset 0 0 0 1px rgba(15,23,42,0.08);
+    transition: transform 0.18s ease;
+  }
+  .theme-dot.active { transform: scale(1.15); box-shadow: 0 0 0 2px rgba(255,255,255,0.7), 0 0 0 4px rgba(32,175,120,0.2); }
+  .theme-dot[data-theme="emerald"] { background: linear-gradient(135deg, #1ea277, #0b7f62); }
+  .theme-dot[data-theme="ocean"] { background: linear-gradient(135deg, #3bb9d4, #216d95); }
+  .theme-dot[data-theme="sunset"] { background: linear-gradient(135deg, #f39a5f, #d05b3d); }
+  .theme-dot[data-theme="midnight"] { background: linear-gradient(135deg, #1f2937, #475569); }
+
+  .lang-toggle {
+    display: flex; gap: 4px; background: var(--surface-1);
+    border-radius: 10px; padding: 3px; border: 0.5px solid var(--border);
+  }
+  .lang-btn {
+    padding: 5px 10px; border-radius: 7px; border: none;
+    font-size: 12px; cursor: pointer; transition: all 0.15s;
+    background: transparent; color: var(--text-secondary);
+  }
+  .lang-btn.active {
+    background: var(--surface-2);
+    color: var(--text-primary);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+  .hero {
+    background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(231,247,242,0.88));
+    border-bottom: 0.5px solid var(--border);
+    padding: 3.2rem 1.5rem 2.8rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 0 32px 32px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 20px 40px rgba(12, 18, 28, 0.04);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(36, 179, 127, 0.18) 0%, transparent 22%),
+      radial-gradient(circle at 70% 10%, rgba(62, 128, 255, 0.12) 0%, transparent 25%),
+      radial-gradient(circle at 50% 80%, rgba(18, 98, 78, 0.07) 0%, transparent 30%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.7);
+    color: var(--text-accent);
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; margin-bottom: 1.25rem;
+    border: 0.5px solid rgba(29,158,117,0.25);
+    box-shadow: 0 10px 20px rgba(18, 39, 30, 0.04);
+  }
+  .hero-title { font-size: clamp(28px, 4vw, 42px); font-weight: 800; line-height: 1.18; margin-bottom: 0.45rem; color: var(--text-primary); letter-spacing: -0.03em; }
+  .hero-title-tamil { font-size: 20px; color: var(--text-secondary); font-weight: 600; margin-bottom: 1rem; }
+  .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 660px; margin: 0 auto 2rem; line-height: 1.7; }
+
+  .feature-pill-row {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+  .feature-pill {
+    border: 1px solid rgba(32,175,120,0.15);
+    background: linear-gradient(135deg, rgba(32,175,120,0.10), rgba(124,200,255,0.08));
+    color: var(--text-accent);
+    padding: 7px 12px; border-radius: 999px;
+    font-size: 12px; font-weight: 700;
+    box-shadow: 0 6px 16px rgba(25, 111, 91, 0.06);
+  }
+
+  .hero-input-wrap {
+    max-width: 620px; margin: 0 auto;
+    background: rgba(255,255,255,0.78);
+    border: 1.5px solid rgba(29,158,117,0.18);
+    border-radius: 22px;
+    padding: 12px 12px 8px;
+    box-shadow: 0 18px 40px rgba(12, 18, 28, 0.08), 0 0 0 1px rgba(255,255,255,0.45) inset;
+    border-image: linear-gradient(135deg, rgba(42,176,128,0.55), rgba(70,110,255,0.2)) 1;
+  }
+  .hero-input {
+    width: 100%; border: none; background: transparent;
+    font-size: 15px; color: var(--text-primary);
+    outline: none; resize: none;
+    font-family: var(--font-sans);
+    min-height: 46px;
+  }
+  .hero-input::placeholder { color: var(--text-muted); }
+  .hero-input-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 6px;
+  }
+  .hero-send-btn {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, #27b57f, #0f7b60); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 16px; transition: all 0.15s;
+    box-shadow: 0 8px 18px rgba(31,163,119,0.2);
+  }
+  .hero-send-btn:hover { transform: translateY(-1px); }
+
+  .quick-prompts {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    margin-top: 1.5rem; max-width: 620px; margin-left: auto; margin-right: auto;
+  }
+  .quick-prompt {
+    padding: 7px 14px; border-radius: 999px;
+    border: 0.5px solid var(--border-strong);
+    background: var(--surface-2); color: var(--text-secondary);
+    font-size: 13px; cursor: pointer; transition: all 0.15s;
+  }
+  .quick-prompt:hover { border-color: #1D9E75; color: var(--text-accent); background: var(--bg-success); }
+
+  .stats-bar {
+    display: flex; gap: 0; border-bottom: 0.5px solid var(--border);
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(8px);
+  }
+  .stat-item {
+    flex: 1; padding: 16px 12px; text-align: center;
+    border-right: 0.5px solid var(--border);
+    transition: background 0.18s ease;
+  }
+  .stat-item:hover { background: rgba(29, 158, 117, 0.04); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-size: 20px; font-weight: 700; color: var(--text-accent); }
+  .stat-label { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+  .trust-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    padding: 1.2rem 1.5rem 0;
+  }
+  .trust-card {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 0.9rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 18px rgba(15,23,42,0.02);
+  }
+  .trust-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: grid; place-items: center;
+    background: var(--bg-success);
+    color: var(--text-accent);
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .trust-copy strong { display: block; font-size: 13px; color: var(--text-primary); }
+  .trust-copy span { display: block; font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+  .quick-need-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    padding: 1rem 1.5rem 0;
+  }
+  .need-card {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 0.8rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .need-card:hover {
+    transform: translateY(-1px);
+    border-color: #1D9E75;
+    box-shadow: 0 10px 20px rgba(29,158,117,0.08);
+  }
+  .need-card .item-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+  .need-card .item-label { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+
+  .section { padding: 2rem 1.5rem; }
+
+  .mini-badges {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 8px;
+    margin-top: 1rem;
+  }
+  .mini-badge {
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(17,24,39,0.05);
+    color: var(--text-secondary);
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .section-header { margin-bottom: 1.25rem; }
+  .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+  .section-sub { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  .cat-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(247,252,249,0.9));
+    border: 0.5px solid var(--border);
+    border-radius: 18px;
+    padding: 1rem 0.75rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    box-shadow: 0 10px 20px rgba(15,23,42,0.03);
+  }
+  .cat-card:hover {
+    border-color: #1D9E75;
+    box-shadow: 0 0 0 3px rgba(29,158,117,0.08), 0 16px 24px rgba(29,158,117,0.10);
+    transform: translateY(-2px);
+  }
+  .cat-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .cat-name { font-size: 12px; font-weight: 600; color: var(--text-primary); display: block; }
+  .cat-name-en { font-size: 11px; color: var(--text-secondary); display: block; margin-top: 2px; }
+  .cat-count { font-size: 11px; color: var(--text-accent); margin-top: 4px; display: block; }
+
+  .schemes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .scheme-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(249,253,251,0.92));
+    border: 0.5px solid var(--border);
+    border-radius: 18px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    position: relative;
+    box-shadow: 0 12px 28px rgba(15,23,42,0.04);
+  }
+  .scheme-card:hover {
+    border-color: #1D9E75;
+    box-shadow: 0 14px 32px rgba(29,158,117,0.12);
+    transform: translateY(-2px);
+  }
+  .scheme-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .scheme-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .scheme-icon.edu { background: #E6F1FB; }
+  .scheme-icon.agri { background: #EAF3DE; }
+  .scheme-icon.women { background: #FBEAF0; }
+  .scheme-icon.emp { background: #FAEEDA; }
+  .scheme-icon.health { background: #FAECE7; }
+  .scheme-icon.biz { background: #EEEDFE; }
+  .scheme-name { font-size: 14px; font-weight: 700; line-height: 1.3; }
+  .scheme-name-tamil { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .scheme-dept { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+  .scheme-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 10px; }
+  .scheme-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .scheme-tag {
+    padding: 3px 8px; border-radius: 999px;
+    font-size: 11px; font-weight: 600;
+  }
+  .tag-edu { background: #E6F1FB; color: #185FA5; }
+  .tag-agri { background: #EAF3DE; color: #3B6D11; }
+  .tag-women { background: #FBEAF0; color: #993556; }
+  .tag-emp { background: #FAEEDA; color: #854F0B; }
+  .tag-health { background: #FAECE7; color: #993C1D; }
+  .tag-biz { background: #EEEDFE; color: #534AB7; }
+  .scheme-footer { display: flex; align-items: center; justify-content: space-between; }
+  .scheme-benefit { font-size: 12px; color: var(--text-accent); font-weight: 700; }
+  .scheme-btn {
+    padding: 6px 12px; border-radius: 9px;
+    border: 0.5px solid var(--border-strong);
+    background: rgba(255,255,255,0.6); color: var(--text-primary);
+    font-size: 12px; cursor: pointer; transition: all 0.15s;
+  }
+  .scheme-btn:hover { background: var(--bg-success); color: var(--text-accent); border-color: #1D9E75; }
+  .scheme-save-btn {
+    padding: 6px 10px; border-radius: 9px; border: 0.5px solid var(--border-strong);
+    background: rgba(255,255,255,0.6); color: var(--text-secondary); cursor: pointer;
+    font-size: 12px; min-width: 36px;
+  }
+  .scheme-save-btn.saved {
+    background: rgba(255, 240, 208, 0.8); color: #b36a00; border-color: rgba(180,122,12,0.25);
+  }
+  .saved-strip {
+    margin: 0 1.5rem 1rem; background: rgba(255,255,255,0.72); border: 0.5px solid var(--border);
+    border-radius: 16px; padding: 1rem; box-shadow: 0 10px 22px rgba(15,23,42,0.04);
+  }
+  .saved-strip-header {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px;
+  }
+  .saved-strip-title {
+    font-size: 13px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px;
+  }
+  .saved-actions {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .saved-list {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .saved-pill {
+    background: var(--bg-success); color: var(--text-accent); border: 0.5px solid rgba(29,158,117,0.15);
+    padding: 6px 10px; border-radius: 999px; font-size: 11px; font-weight: 600;
+    cursor: pointer;
+  }
+  .compare-panel {
+    margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;
+  }
+  .compare-card {
+    background: rgba(255,255,255,0.82); border: 0.5px solid var(--border); border-radius: 12px; padding: 12px;
+  }
+  .compare-card h4 {
+    font-size: 13px; margin-bottom: 6px; color: var(--text-primary);
+  }
+  .compare-card p {
+    font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 4px;
+  }
+  .curated-section {
+    margin: 0 1.5rem 1rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.84), rgba(247,239,255,0.92));
+    border: 0.5px solid var(--border); border-radius: 18px; padding: 1rem; box-shadow: 0 12px 24px rgba(15,23,42,0.04);
+  }
+  .curated-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 12px;
+  }
+  .curated-tile {
+    background: rgba(255,255,255,0.8); border: 0.5px solid var(--border); border-radius: 14px; padding: 12px; position: relative; overflow: hidden;
+  }
+  .curated-rank {
+    display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 26px; border-radius: 999px;
+    background: linear-gradient(135deg, #1D9E75, #6ad6ae); color: white; font-size: 11px; font-weight: 700; margin-bottom: 8px;
+  }
+  .curated-name {
+    font-size: 13px; font-weight: 700; color: var(--text-primary); line-height: 1.4; margin-bottom: 4px;
+  }
+  .curated-meta {
+    font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.5;
+  }
+  .top-matches {
+    margin: 0 1.5rem 1rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.82), rgba(234,248,242,0.9));
+    border: 0.5px solid var(--border); border-radius: 18px; padding: 1rem; box-shadow: 0 12px 24px rgba(15,23,42,0.04);
+  }
+  .top-matches-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 0.85rem;
+  }
+  .top-matches-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;
+  }
+  .match-card {
+    background: rgba(255,255,255,0.8); border: 0.5px solid var(--border); border-radius: 14px; padding: 12px;
+  }
+  .match-badge {
+    display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 999px; background: var(--bg-success);
+    color: var(--text-accent); font-size: 11px; font-weight: 700; margin-bottom: 8px;
+  }
+  .match-card h4 {
+    font-size: 14px; font-weight: 700; margin-bottom: 6px; color: var(--text-primary);
+  }
+  .match-card p {
+    font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 4px;
+  }
+  .match-score {
+    font-size: 12px; font-weight: 700; color: var(--text-accent); margin-top: 8px;
+  }
+  .need-radar {
+    margin: 0 1.5rem 1rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.84), rgba(245,250,255,0.9));
+    border: 0.5px solid var(--border); border-radius: 18px; padding: 1rem; box-shadow: 0 10px 22px rgba(15,23,42,0.04);
+  }
+  .radar-controls {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.8rem; margin-bottom: 1rem;
+  }
+  .radar-chip {
+    border: 0.5px solid var(--border); background: rgba(255,255,255,0.8); color: var(--text-secondary);
+    border-radius: 999px; padding: 7px 12px; font-size: 12px; font-weight: 600; cursor: pointer;
+  }
+  .radar-chip.active {
+    background: var(--bg-success); color: var(--text-accent); border-color: rgba(29,158,117,0.2);
+  }
+  .radar-summary {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px;
+  }
+  .radar-highlight {
+    background: rgba(255,255,255,0.8); border: 0.5px solid var(--border); border-radius: 14px; padding: 14px;
+  }
+  .radar-highlight h4 {
+    font-size: 15px; margin-bottom: 6px; color: var(--text-primary);
+  }
+  .radar-highlight p {
+    font-size: 12px; color: var(--text-secondary); line-height: 1.5;
+  }
+  .radar-list {
+    display: grid; gap: 8px;
+  }
+  .radar-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    background: rgba(255,255,255,0.8); border: 0.5px solid var(--border); border-radius: 12px; padding: 10px 12px;
+  }
+  .radar-item strong { font-size: 12px; color: var(--text-primary); }
+  .radar-item span { font-size: 11px; color: var(--text-secondary); }
+  .score-meter {
+    width: 100%; height: 9px; background: rgba(17,24,39,0.06); border-radius: 999px; overflow: hidden; margin: 10px 0 8px;
+  }
+  .score-meter-fill {
+    height: 100%; border-radius: inherit; background: linear-gradient(90deg, #1D9E75, #5ecf96); transition: width 0.2s ease;
+  }
+  .score-meter-text {
+    font-size: 11px; font-weight: 700; color: var(--text-accent);
+  }
+  .verified-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--bg-success); color: var(--text-accent);
+    font-size: 10px; padding: 3px 6px; border-radius: 999px;
+    display: flex; align-items: center; gap: 3px;
+    font-weight: 600;
+  }
+
+  .chat-container { display: flex; height: calc(100vh - 64px); }
+  .chat-sidebar {
+    width: 240px;
+    border-right: 0.5px solid var(--border);
+    background: rgba(255,255,255,0.35);
+    padding: 1rem;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .chat-sidebar-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+  .sidebar-item {
+    padding: 9px 10px; border-radius: 10px;
+    font-size: 13px; color: var(--text-secondary);
+    cursor: pointer; transition: all 0.15s; margin-bottom: 2px;
+  }
+  .sidebar-item:hover { background: var(--surface-2); color: var(--text-primary); }
+  .sidebar-item.active { background: var(--bg-success); color: var(--text-accent); font-weight: 600; }
+
+  .chat-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  
+  .msg { display: flex; gap: 10px; max-width: 85%; }
+  .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+  .msg.assistant { align-self: flex-start; }
+  .msg-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .msg.user .msg-avatar { background: var(--bg-accent); color: var(--text-accent); }
+  .msg.assistant .msg-avatar { background: var(--bg-success); color: #0F6E56; }
+  .msg-bubble {
+    padding: 12px 14px; border-radius: 14px;
+    font-size: 14px; line-height: 1.6;
+  }
+  .msg.user .msg-bubble {
+    background: linear-gradient(135deg, #1fba85, #0f7d60); color: white;
+    border-radius: 14px 14px 5px 14px;
+  }
+  .msg.assistant .msg-bubble {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 14px 14px 14px 5px;
+    color: var(--text-primary);
+  }
+
+  .chat-scheme-card {
+    background: var(--surface-1);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 10px;
+  }
+  .chat-scheme-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .chat-scheme-detail { font-size: 12px; color: var(--text-secondary); margin: 2px 0; }
+  .chat-scheme-btns { display: flex; gap: 6px; margin-top: 8px; }
+  .chat-scheme-btn {
+    padding: 4px 10px; border-radius: var(--radius);
+    font-size: 11px; border: 0.5px solid var(--border-strong);
+    background: transparent; color: var(--text-primary);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .chat-scheme-btn:hover { background: var(--bg-success); color: var(--text-accent); border-color: #1D9E75; }
+  .chat-scheme-btn.primary { background: #1D9E75; color: white; border-color: #1D9E75; }
+
+  .source-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--bg-success); color: var(--text-accent);
+    font-size: 11px; padding: 2px 8px; border-radius: 999px;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  .chat-input-area {
+    border-top: 0.5px solid var(--border);
+    padding: 1rem;
+    background: rgba(255,255,255,0.45);
+  }
+  .chat-input-wrap {
+    display: flex; gap: 8px; align-items: flex-end;
+    background: var(--surface-1);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 8px 8px 8px 12px;
+  }
+  .chat-input {
+    flex: 1; border: none; background: transparent;
+    font-size: 14px; color: var(--text-primary);
+    outline: none; resize: none; font-family: var(--font-sans);
+    max-height: 100px; min-height: 26px;
+  }
+  .chat-input::placeholder { color: var(--text-muted); }
+  .chat-send-btn {
+    width: 32px; height: 32px; border-radius: 9px;
+    background: linear-gradient(135deg, #27b57f, #0f7d60); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 14px; transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .chat-send-btn:hover { transform: translateY(-1px); }
+  .chat-send-btn:disabled { background: var(--fill-disabled); cursor: not-allowed; }
+
+  .suggested-qs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .suggested-q {
+    padding: 5px 10px; border-radius: 999px;
+    border: 0.5px solid var(--border);
+    background: var(--surface-2); color: var(--text-secondary);
+    font-size: 12px; cursor: pointer; transition: all 0.15s;
+  }
+  .suggested-q:hover { border-color: #1D9E75; color: var(--text-accent); }
+
+  .typing-indicator { display: flex; align-items: center; gap: 4px; padding: 8px 0; }
+  .typing-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #1D9E75; animation: bounce 1.2s ease-in-out infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+  .scheme-detail-page { padding: 2rem 1.5rem; max-width: 780px; margin: 0 auto; }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: transparent; border: none; cursor: pointer;
+    color: var(--text-secondary); font-size: 13px; margin-bottom: 1.5rem;
+    padding: 0;
+  }
+  .back-btn:hover { color: var(--text-primary); }
+  .detail-header {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .detail-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .detail-title-tamil { font-size: 16px; color: var(--text-secondary); margin-bottom: 1rem; }
+  .detail-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .detail-meta-item {
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; background: var(--surface-1);
+    border: 0.5px solid var(--border); color: var(--text-secondary);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .detail-section {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 10px;
+  }
+  .detail-section-title {
+    font-size: 14px; font-weight: 700; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .detail-section-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--bg-success);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .detail-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .detail-list li {
+    font-size: 13px; color: var(--text-secondary);
+    padding-left: 16px; position: relative; line-height: 1.6;
+  }
+  .detail-list li::before {
+    content: '•'; position: absolute; left: 0;
+    color: #1D9E75;
+  }
+  .detail-steps { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .detail-step { display: flex; gap: 12px; align-items: flex-start; }
+  .step-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #1D9E75; color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .step-text { font-size: 13px; color: var(--text-secondary); line-height: 1.55; padding-top: 2px; }
+  .apply-cta {
+    background: linear-gradient(135deg, #1fba85, #0f7d60); color: white;
+    border: none; border-radius: 10px;
+    padding: 12px 24px; font-size: 14px; font-weight: 700;
+    cursor: pointer; width: 100%; margin-top: 8px;
+    transition: all 0.15s;
+  }
+  .apply-cta:hover { transform: translateY(-1px); }
+
+  .disclaimer {
+    background: var(--bg-warning);
+    border: 0.5px solid var(--border-warning);
+    border-radius: 8px;
+    padding: 10px 14px; 
+    font-size: 12px;
+    color: var(--text-warning);
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+
+  .checker-shell {
+    max-width: 980px; margin: 0 auto; padding: 1.75rem 1rem 2.5rem;
+  }
+  .checker-hero {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(219,246,235,0.88));
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 16px 32px rgba(17,24,39,0.04);
+  }
+  .checker-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 12px; border-radius: 999px;
+    background: var(--bg-success); color: var(--text-accent);
+    font-size: 12px; font-weight: 700;
+  }
+  .checker-score-pill {
+    min-width: 88px; padding: 10px 12px; border-radius: 12px;
+    background: rgba(19,123,94,0.08); border: 1px solid rgba(19,123,94,0.12);
+    text-align: center;
+  }
+  .checker-score-pill strong {
+    display: block; font-size: 18px; color: var(--text-accent);
+  }
+  .checker-score-pill span {
+    font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .wizard { max-width: 960px; margin: 0 auto; padding: 0; }
+  .wizard-panel-wrap {
+    display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.7fr);
+    gap: 1rem;
+    align-items: start;
+  }
+  .wizard-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(244,251,247,0.92));
+    border: 0.5px solid var(--border);
+    border-radius: 22px;
+    padding: 1.25rem;
+    box-shadow: 0 16px 30px rgba(15,23,42,0.04);
+  }
+  .wizard-progress { height: 6px; background: rgba(17,24,39,0.05); border-radius: 999px; margin-bottom: 1.25rem; overflow: hidden; }
+  .wizard-progress-bar { height: 100%; background: linear-gradient(90deg, #1ec387, #0f7d60); border-radius: 999px; transition: width 0.3s; }
+  .wizard-step-label { font-size: 12px; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .wizard-title { font-size: 24px; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-primary); }
+  .wizard-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.4rem; line-height: 1.6; }
+  .wizard-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+  .wizard-option {
+    padding: 14px 12px; border-radius: 14px;
+    border: 1.5px solid var(--border);
+    background: rgba(255,255,255,0.78); cursor: pointer;
+    transition: all 0.15s; text-align: left;
+    min-height: 96px;
+  }
+  .wizard-option:hover { border-color: #1D9E75; transform: translateY(-1px); }
+  .wizard-option.selected { border-color: #1D9E75; background: var(--bg-success); box-shadow: inset 0 0 0 1px rgba(29,158,117,0.08); }
+  .wizard-option-icon { font-size: 22px; display: block; margin-bottom: 7px; }
+  .wizard-option-label { font-size: 13px; font-weight: 700; display: block; }
+  .wizard-option-sub { font-size: 11px; color: var(--text-secondary); display: block; margin-top: 2px; }
+  .wizard-next {
+    width: 100%; padding: 12px 14px; border-radius: 12px;
+    background: linear-gradient(135deg, #1fba85, #0f7d60); color: white; border: none;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .wizard-next:hover { transform: translateY(-1px); }
+  .wizard-next:disabled { background: var(--fill-disabled); cursor: not-allowed; }
+  .wizard-input {
+    width: 100%; padding: 12px 14px; border-radius: 12px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface-2); color: var(--text-primary);
+    font-size: 14px; margin-bottom: 1.5rem; outline: none;
+    font-family: var(--font-sans);
+    box-shadow: inset 0 1px 2px rgba(15,23,42,0.04);
+  }
+  .wizard-input:focus { border-color: #1D9E75; }
+  .wizard-summary {
+    background: rgba(255,255,255,0.7);
+    border: 0.5px solid var(--border);
+    border-radius: 18px;
+    padding: 1rem;
+  }
+  .summary-title {
+    font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+  }
+  .summary-list {
+    display: grid; gap: 8px;
+  }
+  .summary-item {
+    background: rgba(255,255,255,0.72); border: 0.5px solid var(--border); border-radius: 10px; padding: 8px 10px;
+  }
+  .summary-item-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .summary-item-value { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-top: 4px; }
+
+  .results { padding: 2rem 1.5rem; max-width: 900px; margin: 0 auto; }
+  .results-hero {
+    background: linear-gradient(135deg, rgba(255,255,255,0.84), rgba(232,248,239,0.9));
+    border: 0.5px solid var(--border); border-radius: 20px; padding: 1.2rem 1.25rem; margin-bottom: 1rem;
+    box-shadow: 0 16px 32px rgba(15,23,42,0.04);
+  }
+  .results-hero-grid {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap;
+  }
+  .results-kpi {
+    display: flex; align-items: center; gap: 12px; background: rgba(19,123,94,0.08); border: 1px solid rgba(19,123,94,0.12);
+    border-radius: 12px; padding: 10px 12px; min-width: 160px;
+  }
+  .results-kpi strong { display: block; font-size: 20px; color: var(--text-accent); }
+  .results-kpi span { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); }
+  .results-header { margin-bottom: 1.5rem; }
+  .results-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .results-sub { font-size: 14px; color: var(--text-secondary); }
+  .result-card {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 10px;
+    display: flex; gap: 1rem; align-items: flex-start;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .result-card:hover { border-color: #1D9E75; }
+  .match-score {
+    background: var(--bg-success);
+    border-radius: 10px;
+    padding: 8px 12px;
+    text-align: center; flex-shrink: 0; width: 64px;
+  }
+  .match-pct { font-size: 18px; font-weight: 700; color: var(--text-accent); display: block; }
+  .match-label { font-size: 10px; color: var(--text-secondary); }
+  .result-info { flex: 1; }
+  .result-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .result-tamil { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+  .result-why { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 8px; }
+  .result-benefit { font-size: 13px; color: var(--text-accent); font-weight: 700; }
+
+  .search-bar {
+    display: flex; gap: 8px;
+    padding: 1rem 1.5rem;
+    background: rgba(255,255,255,0.52);
+    border-bottom: 0.5px solid var(--border);
+    backdrop-filter: blur(12px);
+  }
+  .search-input {
+    flex: 1; padding: 10px 14px; border-radius: 12px;
+    border: 1px solid var(--border-strong);
+    background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(247,252,249,0.95));
+    color: var(--text-primary);
+    font-size: 14px; outline: none; font-family: var(--font-sans);
+    box-shadow: inset 0 1px 2px rgba(15,23,42,0.03);
+  }
+  .search-input:focus { border-color: #1D9E75; }
+  .search-btn {
+    padding: 9px 16px; border-radius: 10px;
+    background: linear-gradient(135deg, #1fba85, #0f7d60); color: white; border: none;
+    font-size: 14px; cursor: pointer; transition: all 0.15s;
+  }
+  .search-btn:hover { transform: translateY(-1px); }
+
+  .filter-bar {
+    display: flex; gap: 6px; padding: 10px 1.5rem;
+    overflow-x: auto; border-bottom: 0.5px solid var(--border);
+    background: rgba(255,255,255,0.35);
+  }
+  .filter-btn {
+    padding: 5px 12px; border-radius: 999px;
+    border: 0.5px solid var(--border);
+    background: var(--surface-2); color: var(--text-secondary);
+    font-size: 12px; cursor: pointer; white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover, .filter-btn.active { background: var(--bg-success); color: var(--text-accent); border-color: #1D9E75; }
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-msg {
+    background: var(--bg-danger); color: var(--text-danger);
+    border: 0.5px solid var(--border-danger);
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 13px; margin: 8px 0;
+  }
+</style>
+
+<div class="app">
+  <h2 class="sr-only">நலத்திட்ட நண்பன் — Tamil Government Welfare Scheme Discovery Platform</h2>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon" aria-hidden="true">
+        <i class="ti ti-shield-heart"></i>
+      </div>
+      <div class="logo-text">
+        <span class="logo-title">நலத்திட்ட நண்பன்</span>
+        <span class="logo-sub">Nallathita Nanban</span>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <button class="nav-btn active" onclick="showPage('home')" id="nav-home">முகப்பு</button>
+      <button class="nav-btn" onclick="showPage('schemes')" id="nav-schemes">திட்டங்கள்</button>
+      <button class="nav-btn" onclick="showPage('chat')" id="nav-chat">AI நண்பன்</button>
+      <button class="nav-btn" onclick="showPage('checker')" id="nav-checker">தகுதி சரிபார்</button>
+    </nav>
+    <div class="theme-switcher" aria-label="Theme switcher">
+      <button class="theme-dot active" data-theme="emerald" title="Emerald theme" aria-label="Emerald theme"></button>
+      <button class="theme-dot" data-theme="ocean" title="Ocean theme" aria-label="Ocean theme"></button>
+      <button class="theme-dot" data-theme="sunset" title="Sunset theme" aria-label="Sunset theme"></button>
+      <button class="theme-dot" data-theme="midnight" title="Midnight theme" aria-label="Midnight theme"></button>
+    </div>
+    <div class="lang-toggle" role="group" aria-label="Language selection">
+      <button class="lang-btn active" id="lang-ta" onclick="setLang('ta')">தமிழ்</button>
+      <button class="lang-btn" id="lang-en" onclick="setLang('en')">EN</button>
+    </div>
+  </header>
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <section class="hero">
+      <div class="hero-badge" aria-label="AI-powered platform">
+        <i class="ti ti-sparkles" aria-hidden="true"></i>
+        AI-Powered · Tamil-First · Verified Sources
+      </div>
+      <h1 class="hero-title" id="hero-title">உங்களுக்கு கிடைக்கக்கூடிய அரசு திட்டங்களை கண்டுபிடியுங்கள்</h1>
+      <p class="hero-title-tamil" id="hero-en">Government schemes made simple, in your language.</p>
+      <p class="hero-sub" id="hero-sub">உங்கள் தேவையை தமிழில் சொல்லுங்கள். உங்களுக்கு பொருத்தமான அரசு நலத்திட்டங்களை எளிமையாக தெரிந்துகொள்ளுங்கள்.</p>
+      <div class="feature-pill-row" aria-label="Platform highlights">
+        <span class="feature-pill">300+ schemes</span>
+        <span class="feature-pill">AI eligibility match</span>
+        <span class="feature-pill">Multi-language support</span>
+        <span class="feature-pill">Official source links</span>
+      </div>
+      <div class="mini-badges" aria-label="Quick trust badges">
+        <span class="mini-badge">✅ Tamil-first interface</span>
+        <span class="mini-badge">📍 State + Central coverage</span>
+        <span class="mini-badge">🔎 Smart filtering</span>
+      </div>
+      <div class="hero-input-wrap" role="search">
+        <textarea class="hero-input" id="hero-input" placeholder="உங்களுக்கு என்ன உதவி வேண்டும்? (Tamil / Tanglish / English)" rows="1" aria-label="Search government schemes"></textarea>
+        <div class="hero-input-footer">
+          <span style="font-size:11px;color:var(--text-muted)"><i class="ti ti-info-circle" aria-hidden="true"></i> Tamil, Tanglish, English — எல்லா மொழியிலும் கேட்கலாம்</span>
+          <button class="hero-send-btn" onclick="heroSearch()" aria-label="Search">
+            <i class="ti ti-arrow-up" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="quick-prompts" role="list" aria-label="Quick search prompts">
+        <button class="quick-prompt" onclick="heroQuickSearch('நான் ஒரு மாணவன்')" role="listitem">🎓 மாணவர் உதவி</button>
+        <button class="quick-prompt" onclick="heroQuickSearch('நான் ஒரு விவசாயி')" role="listitem">🌾 விவசாயி உதவி</button>
+        <button class="quick-prompt" onclick="heroQuickSearch('பெண்களுக்கான திட்டங்கள்')" role="listitem">👩 பெண்கள் திட்டங்கள்</button>
+        <button class="quick-prompt" onclick="heroQuickSearch('வேலை தேடுகிறேன்')" role="listitem">💼 வேலை / தொழில்</button>
+        <button class="quick-prompt" onclick="heroQuickSearch('வீட்டு திட்டங்கள்')" role="listitem">🏠 வீட்டு உதவி</button>
+        <button class="quick-prompt" onclick="heroQuickSearch('சுகாதார உதவி வேண்டும்')" role="listitem">🏥 சுகாதார உதவி</button>
+      </div>
+    </section>
+
+    <div class="stats-bar" role="region" aria-label="Platform statistics">
+      <div class="stat-item">
+        <div class="stat-num">464+</div>
+        <div class="stat-label">திட்டங்கள்</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">10+</div>
+        <div class="stat-label">வகைகள்</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">Tamil</div>
+        <div class="stat-label">முதல் மொழி</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">Free</div>
+        <div class="stat-label">இலவசம்</div>
+      </div>
+    </div>
+
+    <div class="trust-strip" aria-label="Trust indicators">
+      <div class="trust-card">
+        <div class="trust-icon">✓</div>
+        <div class="trust-copy"><strong>Verified sources</strong><span>State + Central schemes</span></div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">⚡</div>
+        <div class="trust-copy"><strong>Fast discovery</strong><span>AI + category filters</span></div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🗣</div>
+        <div class="trust-copy"><strong>Local language</strong><span>Tamil / English / Tanglish</span></div>
+      </div>
+    </div>
+
+    <div class="curated-section" aria-live="polite">
+      <div class="top-matches-head">
+        <div class="section-title" style="font-size:16px;">🏆 Top 50 curated opportunities</div>
+        <button class="scheme-btn" onclick="showPage('schemes')">Explore all</button>
+      </div>
+      <div class="curated-grid" id="curated-grid"></div>
+    </div>
+
+    <div class="top-matches" aria-live="polite">
+      <div class="top-matches-head">
+        <div class="section-title" style="font-size:16px;">🔥 Top matches for you</div>
+        <button class="scheme-btn" onclick="showPage('schemes')">View all</button>
+      </div>
+      <div class="top-matches-grid" id="top-matches-grid"></div>
+    </div>
+
+    <div class="need-radar" aria-live="polite">
+      <div class="top-matches-head">
+        <div class="section-title" style="font-size:16px;">🛰️ Need Radar</div>
+        <button class="scheme-btn" onclick="showPage('checker')">Eligibility check</button>
+      </div>
+      <div class="radar-controls" id="radar-controls">
+        <button class="radar-chip active" data-radar="student">🎓 Student</button>
+        <button class="radar-chip" data-radar="farmer">🌾 Farmer</button>
+        <button class="radar-chip" data-radar="women">👩 Women</button>
+        <button class="radar-chip" data-radar="health">🏥 Health</button>
+        <button class="radar-chip" data-radar="business">🚀 Business</button>
+      </div>
+      <div class="radar-summary" id="radar-summary"></div>
+    </div>
+
+    <div class="quick-need-grid" aria-label="Popular needs">
+      <div class="need-card" onclick="heroQuickSearch('நான் ஒரு மாணவன்')">
+        <span class="item-icon">🎓</span>
+        <span class="item-label">மாணவர்</span>
+      </div>
+      <div class="need-card" onclick="heroQuickSearch('நான் ஒரு விவசாயி')">
+        <span class="item-icon">🌾</span>
+        <span class="item-label">விவசாயி</span>
+      </div>
+      <div class="need-card" onclick="heroQuickSearch('பெண்களுக்கான திட்டங்கள்')">
+        <span class="item-icon">👩</span>
+        <span class="item-label">பெண்கள்</span>
+      </div>
+      <div class="need-card" onclick="heroQuickSearch('வேலை தேடுகிறேன்')">
+        <span class="item-icon">💼</span>
+        <span class="item-label">வேலை</span>
+      </div>
+      <div class="need-card" onclick="heroQuickSearch('வீட்டு உதவி வேண்டும்')">
+        <span class="item-icon">🏠</span>
+        <span class="item-label">வீடு</span>
+      </div>
+      <div class="need-card" onclick="heroQuickSearch('சுகாதார திட்டங்கள்')">
+        <span class="item-icon">🏥</span>
+        <span class="item-label">சுகாதாரம்</span>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">திட்ட வகைகள் · Categories</h2>
+        <p class="section-sub">உங்கள் தேவைக்கேற்ற வகையை தேர்வு செய்யுங்கள்</p>
+      </div>
+      <div class="categories-grid" role="list">
+        <div class="cat-card" onclick="filterCategory('education')" role="listitem" tabindex="0">
+          <span class="cat-icon" aria-hidden="true">🎓</span>
+          <span class="cat-name">கல்வி</span>
+          <span class="cat-name-en">Education</span>
+          <span class="cat-count">45+ திட்டங்கள்</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('agriculture')" role="listitem" tabindex="0">
+          <span class="cat-icon" aria-hidden="true">🌾</span>
+          <span class="cat-name">விவசாயம்</span>
+          <span class="cat-name-en">Agriculture</span>
+          <span class="cat-count">38+ திட்டங்கள்</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('women')" role="listitem" tabindex="0">
+          <span class="cat-icon" aria-hidden="true">👩</span>
+          <span class="cat-name">பெண்கள்</span>
+          <span class="cat-name-en">Women</span>
+          <span class="cat-count">28+ திட்டங்கள்</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('employment')" role="listitem" tabindex="0">
+          <span class="cat-icon" aria-hidden="true">💼</span>
+          <span class="cat-name">வேலைவாய்ப்பு</span>
+          <span class="cat-name-en">Employment</span>
+          <span class="cat-count">22+ திட்டங்கள்</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('health')" role="listitem" tabindex="0">
+          <span class="cat-icon" aria-hidden="true">🏥</span>
+          <span class="cat-name">சுகாதாரம்</span>
+          <span class="cat-name-en">Healthcare</span>
+          <span class="cat-count">32+ திட்டங்கள்</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('housing')" role="listitem" tabindex="0">
+          <span class="cat-icon" aria-hidden="true">🏠</span>
+          <span class="cat-name">வீடு</span>
+          <span class="cat-name-en">Housing</span>
+          <span class="cat-count">18+ திட்டங்கள்</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('business')" role="listitem" tabindex="0">
+          <span class="cat-icon" aria-hidden="true">🚀</span>
+          <span class="cat-name">தொழில்</span>
+          <span class="cat-name-en">Business/MSME</span>
+          <span class="cat-count">24+ திட்டங்கள்</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('disability')" role="listitem" tabindex="0">
+          <span class="cat-icon" aria-hidden="true">♿</span>
+          <span class="cat-name">மாற்றுத்திறன்</span>
+          <span class="cat-name-en">Disability</span>
+          <span class="cat-count">15+ திட்டங்கள்</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('senior')" role="listitem" tabindex="0">
+          <span class="cat-icon" aria-hidden="true">👴</span>
+          <span class="cat-name">மூத்த குடிமக்கள்</span>
+          <span class="cat-name-en">Senior Citizens</span>
+          <span class="cat-count">12+ திட்டங்கள்</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('finance')" role="listitem" tabindex="0">
+          <span class="cat-icon" aria-hidden="true">💰</span>
+          <span class="cat-name">நிதி உதவி</span>
+          <span class="cat-name-en">Financial Aid</span>
+          <span class="cat-count">30+ திட்டங்கள்</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--surface-1);border-top:0.5px solid var(--border);">
+      <div class="section-header">
+        <h2 class="section-title">சிறந்த திட்டங்கள் · Featured Schemes</h2>
+        <p class="section-sub">அதிகம் பயன்படும் அரசு நலத்திட்டங்கள்</p>
+      </div>
+      <div class="schemes-grid" id="featured-schemes"></div>
+    </section>
+  </div>
+
+  <!-- SCHEMES PAGE -->
+  <div class="page" id="page-schemes">
+    <div class="search-bar">
+      <input class="search-input" id="scheme-search" placeholder="திட்டங்களை தேடுங்கள் — Search schemes..." aria-label="Search schemes">
+      <button class="search-btn" onclick="searchSchemes()">
+        <i class="ti ti-search" aria-hidden="true"></i> தேடு
+      </button>
+    </div>
+    <div class="filter-bar" role="group" aria-label="Filter by category">
+      <button class="filter-btn active" onclick="filterSchemes('all', this)">அனைத்தும்</button>
+      <button class="filter-btn" onclick="filterSchemes('education', this)">🎓 கல்வி</button>
+      <button class="filter-btn" onclick="filterSchemes('agriculture', this)">🌾 விவசாயம்</button>
+      <button class="filter-btn" onclick="filterSchemes('women', this)">👩 பெண்கள்</button>
+      <button class="filter-btn" onclick="filterSchemes('employment', this)">💼 வேலை</button>
+      <button class="filter-btn" onclick="filterSchemes('health', this)">🏥 சுகாதாரம்</button>
+      <button class="filter-btn" onclick="filterSchemes('business', this)">🚀 தொழில்</button>
+    </div>
+    <div class="saved-strip" aria-live="polite">
+      <div class="saved-strip-header">
+        <div class="saved-strip-title"><span>🔖</span> Saved shortlist</div>
+        <div class="saved-actions">
+          <button class="scheme-btn" id="download-shortlist" onclick="downloadSavedShortlist()">Download</button>
+          <button class="scheme-btn" onclick="showPage('home')">முகப்பிற்கு</button>
+        </div>
+      </div>
+      <div class="saved-list" id="saved-list">
+        <span style="font-size:12px;color:var(--text-secondary)">No schemes saved yet. Tap the bookmark to save your favourites.</span>
+      </div>
+      <div class="compare-panel" id="compare-panel"></div>
+    </div>
+    <div class="section">
+      <div class="schemes-grid" id="all-schemes"></div>
+    </div>
+  </div>
+
+  <!-- CHAT PAGE -->
+  <div class="page" id="page-chat">
+    <div class="chat-container">
+      <aside class="chat-sidebar" aria-label="Suggested topics">
+        <div class="chat-sidebar-title">பொதுவான கேள்விகள்</div>
+        <div class="sidebar-item" onclick="loadSuggestedChat('student')">🎓 மாணவர் உதவித்தொகை</div>
+        <div class="sidebar-item" onclick="loadSuggestedChat('farmer')">🌾 விவசாயி திட்டங்கள்</div>
+        <div class="sidebar-item" onclick="loadSuggestedChat('women')">👩 பெண்கள் திட்டங்கள்</div>
+        <div class="sidebar-item" onclick="loadSuggestedChat('employment')">💼 வேலைவாய்ப்பு</div>
+        <div class="sidebar-item" onclick="loadSuggestedChat('health')">🏥 சுகாதார திட்டங்கள்</div>
+        <div class="sidebar-item" onclick="loadSuggestedChat('housing')">🏠 வீட்டு உதவி</div>
+        <div class="sidebar-item" onclick="loadSuggestedChat('business')">🚀 தொழில் திட்டங்கள்</div>
+        <div class="sidebar-item" onclick="loadSuggestedChat('disability')">♿ மாற்றுத்திறன்</div>
+        <div style="margin-top:1rem;padding:10px;background:var(--bg-success);border-radius:8px;">
+          <div style="font-size:11px;font-weight:500;color:#0F6E56;margin-bottom:4px;">⚡ AI நண்பன்</div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.4">Tamil, Tanglish, English — எல்லா மொழியிலும் பேசலாம்</div>
+        </div>
+      </aside>
+      <main class="chat-main">
+        <div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-label="Conversation">
+          <div class="msg assistant">
+            <div class="msg-avatar" aria-hidden="true"><i class="ti ti-shield-heart"></i></div>
+            <div class="msg-bubble">
+              <strong>வணக்கம்! நான் உங்கள் நலத்திட்ட நண்பன் 👋</strong><br><br>
+              நான் உங்களுக்கு பொருத்தமான அரசு நலத்திட்டங்களை கண்டுபிடிக்க உதவுவேன்.<br><br>
+              • தமிழில் கேளுங்கள்<br>
+              • Tanglish-ல் கேளுங்கள்<br>
+              • English-ல் கேளுங்கள்<br><br>
+              <em style="color:var(--text-muted);font-size:12px">உதாரணம்: "நான் ஒரு விவசாயி, என்ன உதவி கிடைக்கும்?"</em>
+            </div>
+          </div>
+        </div>
+        <div class="suggested-qs" id="suggested-qs" style="padding:0 1rem;">
+          <button class="suggested-q" onclick="sendSuggested('நான் ஒரு மாணவன், எனக்கு scholarship கிடைக்குமா?')">🎓 மாணவர் scholarship</button>
+          <button class="suggested-q" onclick="sendSuggested('விவசாயிகளுக்கு என்ன திட்டங்கள் உள்ளன?')">🌾 விவசாயி திட்டங்கள்</button>
+          <button class="suggested-q" onclick="sendSuggested('பெண்களுக்கான அரசு திட்டங்கள் என்னென்ன?')">👩 பெண்கள் திட்டம்</button>
+          <button class="suggested-q" onclick="sendSuggested('வீடு கட்ட அரசு உதவி உண்டா?')">🏠 வீட்டு உதவி</button>
+        </div>
+        <div class="chat-input-area">
+          <div class="chat-input-wrap">
+            <textarea class="chat-input" id="chat-input" placeholder="உங்கள் கேள்வியை இங்கே தட்டச்சு செய்யுங்கள்..." rows="1" aria-label="Type your question"></textarea>
+            <button class="chat-send-btn" id="chat-send" onclick="sendChat()" aria-label="Send message">
+              <i class="ti ti-arrow-up" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:6px;text-align:center">
+            ⚠️ இந்த தகவல் வழிகாட்டுதலுக்காக மட்டுமே. இறுதி தகுதி அரசு துறையால் தீர்மானிக்கப்படும்.
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ELIGIBILITY CHECKER PAGE -->
+  <div class="page" id="page-checker">
+    <div class="wizard" id="wizard-container">
+      <!-- Dynamically rendered -->
+    </div>
+    <div id="results-container" style="display:none"></div>
+  </div>
+
+  <!-- SCHEME DETAIL PAGE -->
+  <div class="page" id="page-detail">
+    <div class="scheme-detail-page" id="detail-content"></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const BASE_SCHEMES = [
+  {
+    id:1, category:'education', icon:'🎓', iconClass:'edu',
+    name:'Post-Matric Scholarship for SC/ST Students',
+    nameTamil:'SC/ST மாணவர்களுக்கு மெட்ரிக் பின் உதவித்தொகை',
+    dept:'Social Welfare Department, Tamil Nadu',
+    desc:'Financial assistance to SC/ST students pursuing higher education after 10th standard.',
+    descTamil:'10ஆம் வகுப்பிற்கு பிறகு உயர்கல்வி படிக்கும் SC/ST மாணவர்களுக்கு நிதி உதவி.',
+    benefit:'₹12,000 – ₹40,000 per year',
+    tags:['SC/ST','Education','Scholarship'],tagClass:'tag-edu',
+    eligibility:['SC/ST category student','Annual family income < ₹2.5 lakh','Enrolled in recognized institution','Minimum 50% marks in previous exam'],
+    documents:['Aadhaar Card','Caste Certificate','Income Certificate','Mark Sheet (previous year)','Bank Account Details','Bonafide Certificate'],
+    steps:['Visit Tamil Nadu e-District portal (www.edistrict.tn.gov.in)','Create/login to your account','Select "Social Welfare > Post-Matric Scholarship"','Fill the online application form','Upload required documents','Submit and save your application number'],
+    url:'https://www.tn.gov.in/scheme/data_view/3',officialSource:'tn.gov.in',
+    verified:'2024-01-15',level:'State',target:'Students (SC/ST)',match:94
+  },
+  {
+    id:2, category:'agriculture', icon:'🌾', iconClass:'agri',
+    name:'PM-KISAN Samman Nidhi',
+    nameTamil:'பிரதமரின் கிசான் சம்மன் நிதி',
+    dept:'Ministry of Agriculture, Government of India',
+    desc:'Income support of ₹6,000 per year to all farmer families across India in three installments.',
+    descTamil:'இந்தியாவெங்கும் உள்ள அனைத்து விவசாய குடும்பங்களுக்கும் வருடத்திற்கு ₹6,000 நிதி உதவி.',
+    benefit:'₹6,000 per year (₹2,000 × 3 installments)',
+    tags:['Farmer','Income Support','Central'],tagClass:'tag-agri',
+    eligibility:['Small and marginal farmers','Must own agricultural land','Valid Aadhaar linked to bank account','Not an income tax payer'],
+    documents:['Aadhaar Card','Land Ownership Records (Patta/Chitta)','Bank Account (Aadhaar linked)','Mobile Number'],
+    steps:['Visit pmkisan.gov.in','Click "Farmer Corner > New Farmer Registration"','Enter Aadhaar number and state','Fill registration form','Submit and verify via OTP','Receive installments directly to bank account'],
+    url:'https://pmkisan.gov.in',officialSource:'pmkisan.gov.in',
+    verified:'2024-03-01',level:'Central',target:'Farmers',match:91
+  },
+  {
+    id:3, category:'women', icon:'👩', iconClass:'women',
+    name:'Moovalur Ramamirtham Ammaiyar Ninaivu Marriage Assistance',
+    nameTamil:'மூவலூர் ராமாமிர்தம் அம்மையார் நினைவு திருமண நிதியுதவி',
+    dept:'Social Welfare Department, Tamil Nadu',
+    desc:'Marriage assistance of ₹50,000 to brides from economically weaker families in Tamil Nadu.',
+    descTamil:'தமிழ்நாட்டில் பொருளாதாரத்தில் பின்தங்கிய குடும்பங்களில் மணமகளுக்கு ₹50,000 நிதியுதவி.',
+    benefit:'₹50,000 + 8 gram gold coin',
+    tags:['Women','Marriage','Tamil Nadu'],tagClass:'tag-women',
+    eligibility:['Bride should be 18+ years','Annual family income < ₹72,000','Tamil Nadu resident','First marriage only','Bride must have studied up to 10th standard'],
+    documents:['Aadhaar Card','Income Certificate','Nativity Certificate','School Certificate','Marriage Invitation'],
+    steps:['Apply at district Social Welfare Office','Or apply through CSC Center','Submit required documents','Officer verification visit','Funds credited to bank account after verification'],
+    url:'https://www.tn.gov.in/scheme/data_view/29',officialSource:'tn.gov.in',
+    verified:'2024-02-10',level:'State',target:'Women',match:89
+  },
+  {
+    id:4, category:'employment', icon:'💼', iconClass:'emp',
+    name:'PMEGP — Prime Minister Employment Generation Programme',
+    nameTamil:'பிரதமர் வேலைவாய்ப்பு உருவாக்க திட்டம்',
+    dept:'KVIC / Ministry of MSME, Government of India',
+    desc:'Provides financial assistance to set up new micro-enterprises to generate employment.',
+    descTamil:'வேலைவாய்ப்பை உருவாக்க புதிய நுண் தொழிற்சாலைகளை அமைக்க நிதி உதவி.',
+    benefit:'Up to 35% subsidy on project cost (max ₹25 lakh for manufacturing)',
+    tags:['Employment','MSME','Subsidy'],tagClass:'tag-emp',
+    eligibility:['Age 18 years and above','Minimum 8th standard pass','New enterprise (not existing)','One person per family eligible'],
+    documents:['Aadhaar Card','PAN Card','Educational Certificate','Project Report','Bank Statement'],
+    steps:['Visit kviconline.gov.in/pmegpeportal','Register and fill application','Submit project report','Bank appraisal and loan sanction','Subsidy credited after enterprise establishment'],
+    url:'https://kviconline.gov.in/pmegpeportal/pmegpweb/index.jsp',officialSource:'kviconline.gov.in',
+    verified:'2024-01-20',level:'Central',target:'Entrepreneurs / Job seekers',match:86
+  },
+  {
+    id:5, category:'health', icon:'🏥', iconClass:'health',
+    name:'Ayushman Bharat — PM-JAY',
+    nameTamil:'ஆயுஷ்மான் பாரத் — பிரதமர் ஜன் ஆரோக்கிய யோஜனா',
+    dept:'National Health Authority, Government of India',
+    desc:'Health cover of ₹5 lakh per family per year for secondary and tertiary hospitalization.',
+    descTamil:'குடும்பத்திற்கு வருடத்திற்கு ₹5 லட்சம் வரை இரண்டாம் மற்றும் மூன்றாம் நிலை மருத்துவமனை சிகிச்சை.',
+    benefit:'₹5 lakh health cover per family per year',
+    tags:['Health','Insurance','Central'],tagClass:'tag-health',
+    eligibility:['Listed in SECC 2011 data','Deprived rural families','Urban workers in specified occupations','No income limit for listed families'],
+    documents:['Aadhaar Card','PMJAY e-Card (generated at CSC/Hospital)','Ration Card (if applicable)'],
+    steps:['Check eligibility at pmjay.gov.in','Visit nearest CSC or empaneled hospital','Generate Ayushman Card','Visit any empaneled hospital','Show Ayushman Card for cashless treatment'],
+    url:'https://pmjay.gov.in',officialSource:'pmjay.gov.in',
+    verified:'2024-03-15',level:'Central',target:'BPL / Economically weaker families',match:88
+  },
+  {
+    id:6, category:'business', icon:'🚀', iconClass:'biz',
+    name:'Tamil Nadu Adi Dravidar & Tribal Welfare Corporation Loans',
+    nameTamil:'தமிழ்நாடு ஆதிதிராவிட பழங்குடி நல கழக கடன்',
+    dept:'Adi Dravidar and Tribal Welfare Department, TN',
+    desc:'Subsidized loans for SC/ST entrepreneurs to start or expand businesses in Tamil Nadu.',
+    descTamil:'தமிழ்நாட்டில் SC/ST தொழில்முனைவோர் தொழில் தொடங்க அல்லது விரிவாக்க மானியக் கடன்.',
+    benefit:'Loans up to ₹5 lakh at 4% interest',
+    tags:['Business','SC/ST','Loan'],tagClass:'tag-biz',
+    eligibility:['SC/ST category','Tamil Nadu resident','Age 18–55','Annual income < ₹1 lakh','No previous loan default'],
+    documents:['Aadhaar Card','Caste Certificate','Income Certificate','Bank Account','Business Plan/Project Report'],
+    steps:['Contact nearest District Adi Dravidar and Tribal Welfare Office','Collect application form','Submit completed application with documents','Committee review and approval','Loan disbursed to bank account'],
+    url:'https://www.adwptamilnadu.com',officialSource:'adwptamilnadu.com',
+    verified:'2024-02-01',level:'State',target:'SC/ST Entrepreneurs',match:82
+  },
+  {
+    id:7, category:'education', icon:'🎓', iconClass:'edu',
+    name:'Chief Minister Kalaignar Urimai Thogai',
+    nameTamil:'முதலமைச்சர் கலைஞர் உரிமைத்தொகை',
+    dept:'Social Welfare Department, Tamil Nadu',
+    desc:'₹1,000 monthly support to women heads of families from economically weaker sections.',
+    descTamil:'பொருளாதாரத்தில் பின்தங்கிய குடும்பத்தின் பெண் தலைவர்களுக்கு மாதம் ₹1,000 நேரடி நிதி.',
+    benefit:'₹1,000 per month (₹12,000 per year)',
+    tags:['Women','Monthly Aid','Tamil Nadu'],tagClass:'tag-women',
+    eligibility:['Women aged 21+ years','Tamil Nadu resident','Annual family income < ₹2.5 lakh','Family should have ration card'],
+    documents:['Aadhaar Card','Ration Card','Bank Account','Income Certificate','Age Proof'],
+    steps:['Register at nearest Sevai Center or CSC','Fill Kalaignar Urimai Thogai form','Submit Aadhaar and ration card','Verification by officials','Monthly transfer to Aadhaar-linked account'],
+    url:'https://www.tn.gov.in',officialSource:'tn.gov.in',
+    verified:'2024-03-20',level:'State',target:'Women',match:90
+  },
+  {
+    id:8, category:'agriculture', icon:'🌾', iconClass:'agri',
+    name:'TNAU Krishi Vigyan Kendra Training',
+    nameTamil:'தமிழ்நாடு வேளாண் பல்கலைக்கழக விவசாய அறிவியல் மையம்',
+    dept:'Tamil Nadu Agricultural University',
+    desc:'Free agricultural training programs for farmers covering modern farming techniques.',
+    descTamil:'நவீன விவசாய நுட்பங்களை விவசாயிகளுக்கு கற்றுக்கொடுக்கும் இலவச பயிற்சி திட்டங்கள்.',
+    benefit:'Free training + inputs + certification',
+    tags:['Farmer','Training','Free'],tagClass:'tag-agri',
+    eligibility:['Registered farmer in Tamil Nadu','Any age','No income restriction','Priority to small/marginal farmers'],
+    documents:['Aadhaar Card','Patta/Chitta (land record)','Farmer Registration Certificate'],
+    steps:['Contact nearest KVK center in your district','Inquire about upcoming training programs','Register for relevant training','Attend training sessions','Receive certificate and training material'],
+    url:'https://www.tnau.ac.in/kvk',officialSource:'tnau.ac.in',
+    verified:'2024-01-10',level:'State',target:'Farmers',match:85
+  },
+  {
+    id:9, category:'housing', icon:'🏠', iconClass:'health',
+    name:'PMAY-G — Pradhan Mantri Awas Yojana (Gramin)',
+    nameTamil:'பிரதமர் ஆவாஸ் யோஜனா — கிராமிய',
+    dept:'Ministry of Rural Development, Government of India',
+    desc:'Financial assistance to rural BPL families to construct a pucca (concrete) house.',
+    descTamil:'கிராமப்புற BPL குடும்பங்கள் சிமெண்ட் வீடு கட்டிக்கொள்ள நிதி உதவி.',
+    benefit:'₹1.2 lakh (plain areas) / ₹1.3 lakh (hilly/difficult areas)',
+    tags:['Housing','Rural','BPL'],tagClass:'tag-health',
+    eligibility:['Rural BPL family','Homeless or living in kutcha house','Listed in SECC 2011','No existing pucca house'],
+    documents:['Aadhaar Card','SECC-2011 inclusion letter','Job Card (MGNREGS)','Bank Account','Land ownership proof'],
+    steps:['Check PMAY list at pmayg.nic.in','If listed, contact Block Development Office','Application processed through Gram Panchayat','Construction support linked to Gram Panchayat approval','Money released in installments tied to construction progress'],
+    url:'https://pmayg.nic.in',officialSource:'pmayg.nic.in',
+    verified:'2024-02-28',level:'Central',target:'Rural BPL families',match:87
+  },
+  {
+    id:10, category:'senior', icon:'👴', iconClass:'edu',
+    name:'Indira Gandhi National Old Age Pension Scheme',
+    nameTamil:'இந்திரா காந்தி தேசிய முதியோர் ஓய்வூதிய திட்டம்',
+    dept:'Ministry of Rural Development, Government of India',
+    desc:'Monthly pension of ₹200 to ₹500 for senior citizens living below the poverty line.',
+    descTamil:'வறுமை கோட்டுக்கு கீழ் வாழும் முதியோர்களுக்கு மாதம் ₹200 முதல் ₹500 ஓய்வூதியம்.',
+    benefit:'₹200/month (60–79 yrs) or ₹500/month (80+ yrs)',
+    tags:['Senior Citizen','Pension','BPL'],tagClass:'tag-edu',
+    eligibility:['Age 60 years and above','BPL family','No other pension income','Indian citizen'],
+    documents:['Aadhaar Card','Age Proof','BPL Ration Card','Bank Account'],
+    steps:['Apply at nearest Gram Panchayat or Block Office','Fill IGNOAPS application form','Submit documents for verification','District collector approval','Pension credited to bank account monthly'],
+    url:'https://nsap.nic.in',officialSource:'nsap.nic.in',
+    verified:'2024-01-05',level:'Central',target:'Senior Citizens (BPL)',match:92
+  },
+  {
+    id:11, category:'education', icon:'🎓', iconClass:'edu',
+    name:'Tamil Nadu Girl Child Education Incentive Scheme',
+    nameTamil:'தமிழ்நாடு சிறுமி கல்வி ஊக்கத்தொகை திட்டம்',
+    dept:'School Education Department, Tamil Nadu',
+    desc:'Educational incentive for girls from low-income backgrounds to continue school and higher education.',
+    descTamil:'சிறு வருமானம் கொண்ட குடும்பங்களைச் சேர்ந்த சிறுமிகளின் பள்ளி மற்றும் உயர்கல்வி தொடர்வை ஊக்குவிக்கும் திட்டம்.',
+    benefit:'₹5,000 – ₹25,000 assistance',
+    tags:['Girls','Education','Incentive'],tagClass:'tag-edu',
+    eligibility:['Girl student in Tamil Nadu','School/college enrollment required','Family income within scheme limits','Regular attendance must be maintained'],
+    documents:['Aadhaar Card','School/College ID','Income Certificate','Bank Account Details','Bonafide Certificate'],
+    steps:['Contact school or district education office','Submit application with student details','Attach income proof and identity documents','School verification and approval','Benefit transferred to parent/student account'],
+    url:'https://www.tn.gov.in',officialSource:'tn.gov.in',
+    verified:'2024-04-20',level:'State',target:'Girl students',match:89
+  },
+  {
+    id:12, category:'agriculture', icon:'🌾', iconClass:'agri',
+    name:'Farm Pond Renovation and Water Harvesting Support',
+    nameTamil:'குட்டை பாசன புதுப்பிப்பு மற்றும் நீர்நிலைய பராமரிப்பு உதவி',
+    dept:'Agriculture Department, Tamil Nadu',
+    desc:'Assistance to farmers for renovating farm ponds and improving water harvesting for crop resilience.',
+    descTamil:'விவசாயிகளுக்கு குட்டை பாசனத்தை புதுப்பித்து, நீர் சேமிப்பை மேம்படுத்துவதற்கான உதவி.',
+    benefit:'₹15,000 – ₹75,000 subsidy',
+    tags:['Farmer','Water','Subsidy'],tagClass:'tag-agri',
+    eligibility:['Registered farmer in Tamil Nadu','Owns or operates agriculture land','Farm pond or rainwater system present','Priority to dry land and water-stressed farmers'],
+    documents:['Aadhaar Card','Land Records','Farm pond details','Bank Account','Farmer ID'],
+    steps:['Apply through local agriculture office','Submit land and farm pond records','District review and field verification','Approval for renovation work','Subsidy released after completion'],
+    url:'https://agri.tn.gov.in',officialSource:'agri.tn.gov.in',
+    verified:'2024-05-10',level:'State',target:'Farmers',match:86
+  },
+  {
+    id:13, category:'women', icon:'👩', iconClass:'women',
+    name:'Tamil Nadu Women SHG Digital Marketing Grant',
+    nameTamil:'தமிழ்நாடு பெண்கள் சுய உதவிக் குழு டிஜிட்டல் சந்தைப்படுத்தல் மானியம்',
+    dept:'Rural Development and Panchayati Raj Department, TN',
+    desc:'Support for women self-help groups to promote products using digital platforms and e-commerce tools.',
+    descTamil:'பெண்கள் சுய உதவிக் குழுக்களுக்கு டிஜிட்டல் தளங்கள் மூலம் விற்பனை மற்றும் சந்தைப்படுத்தலை மேம்படுத்துதல்.',
+    benefit:'₹10,000 – ₹50,000 support',
+    tags:['Women','SHG','Digital'],tagClass:'tag-women',
+    eligibility:['Registered SHG or women-led micro enterprise','Women members from rural/urban self-help groups','Active livelihood activity required','Bank account linked to SHG'],
+    documents:['Aadhaar Card','SHG registration proof','Bank Passbook','Group resolution letter','Business activity proof'],
+    steps:['Approach District Rural Development Agency','Register SHG for digital marketing support','Submit product details and marketing plan','Approval and vendor onboarding','Funds released for advertisements and digital tools'],
+    url:'https://www.tnrd.gov.in',officialSource:'tnrd.gov.in',
+    verified:'2024-03-18',level:'State',target:'Women SHGs',match:88
+  },
+  {
+    id:14, category:'employment', icon:'💼', iconClass:'emp',
+    name:'Rural Youth Apprenticeship Support Scheme',
+    nameTamil:'கிராமப்புற இளைஞர் பயிற்சி ஒப்பந்த உதவி திட்டம்',
+    dept:'Labour and Employment Department, Tamil Nadu',
+    desc:'Short-term apprenticeship and stipend support for rural youth to gain work experience in industries and service sectors.',
+    descTamil:'கிராமப்புற இளைஞர்களுக்கு தொழிற்சாலைகள் மற்றும் சேவைத் துறைகளில் பயிற்சி பெற்றுக் கொடுக்க மாதாந்திர உதவித் தொகை.',
+    benefit:'₹3,000 – ₹8,000 monthly stipend',
+    tags:['Youth','Apprenticeship','Jobs'],tagClass:'tag-emp',
+    eligibility:['Age 18–35 years','Rural resident or migrant youth','Education up to diploma/graduate level','Interested in skill-based employment'],
+    documents:['Aadhaar Card','Educational Certificates','Residence Proof','Bank Account','Passport-size photo'],
+    steps:['Register in employment office or portal','Select suitable apprenticeship opportunity','Complete enrolment and training agreement','Attend assigned workplace training','Receive stipend after monthly attendance'],
+    url:'https://labour.tn.gov.in',officialSource:'labour.tn.gov.in',
+    verified:'2024-04-05',level:'State',target:'Rural youth',match:84
+  },
+  {
+    id:15, category:'health', icon:'🏥', iconClass:'health',
+    name:'Tamil Nadu Child Health Screening and Referral Scheme',
+    nameTamil:'தமிழ்நாடு குழந்தை சுகாதார பரிசோதனை மற்றும் பரிந்துரை திட்டம்',
+    dept:'Health and Family Welfare Department, Tamil Nadu',
+    desc:'Free health screening and referral support for children to detect developmental and nutrition issues early.',
+    descTamil:'குழந்தைகளுக்கு ஆரம்ப பரிசோதனை மற்றும் சுகாதார சிக்கல்களை முன்கூட்டியே கண்டறியும் இலவச திட்டம்.',
+    benefit:'Free screening + referral support',
+    tags:['Child Health','Screening','Free'],tagClass:'tag-health',
+    eligibility:['Children up to 18 years','Priority for high-risk and tribal communities','School/anganwadi registration preferred','Parental consent required'],
+    documents:['Aadhaar Card','Child Birth Certificate','School/Anganwadi ID','Parent Identity proof'],
+    steps:['Visit nearest PHC or school screening camp','Register the child and complete health checkup','Take required tests or screening forms','Get referral if further care is needed','Follow-up through local health worker'],
+    url:'https://health.tn.gov.in',officialSource:'health.tn.gov.in',
+    verified:'2024-02-12',level:'State',target:'Children and families',match:83
+  },
+  {
+    id:16, category:'housing', icon:'🏠', iconClass:'health',
+    name:'Rural House Repair Assistance Scheme',
+    nameTamil:'கிராம வீட்டு பழுதுபார்ப்பு உதவி திட்டம்',
+    dept:'Rural Development and Panchayat Department, Tamil Nadu',
+    desc:'Financial support for repairing damaged roofs, walls, and basic household infrastructure in rural homes.',
+    descTamil:'கிராமப்புற வீடுகளில் கூரை, சுவர் மற்றும் அடிப்படை கட்டமைப்பு பழுதுபார்ப்புக்கு நிதி உதவி.',
+    benefit:'₹20,000 – ₹80,000 assistance',
+    tags:['Housing','Repair','Rural'],tagClass:'tag-health',
+    eligibility:['Rural household with housing damage','Low-income or vulnerable family priority','Documented identity and address required','No premium housing support parallel application'],
+    documents:['Aadhaar Card','House photos','Residence proof','Bank passbook','Ration Card'],
+    steps:['Submit request to local panchayat office','Attach house damage proof and family details','Field verification by local officer','Approval and cost estimate','Funds released for repair work'],
+    url:'https://www.tnrd.gov.in',officialSource:'tnrd.gov.in',
+    verified:'2024-06-01',level:'State',target:'Rural families',match:82
+  },
+  {
+    id:17, category:'business', icon:'🚀', iconClass:'biz',
+    name:'MSME Product Branding and Packaging Grant',
+    nameTamil:'சிறு தொழில் பொருள் பிராண்டிங் மற்றும் பேக்கேஜிங் மானியம்',
+    dept:'MSME Department, Tamil Nadu',
+    desc:'Support for micro and small enterprises to improve their packaging, branding, and digital market readiness.',
+    descTamil:'சிறு தொழில் நிறுவனங்களுக்கு பிராண்டிங், பேக்கேஜிங், மற்றும் டிஜிட்டல் சந்தை தயார்நிலை மேம்பாட்டுக்கு உதவி.',
+    benefit:'₹25,000 – ₹1,20,000 grant',
+    tags:['Business','MSME','Branding'],tagClass:'tag-biz',
+    eligibility:['Registered MSME or micro enterprise','Business active for at least one year','Valid GST/Udyam registration preferred','Bank account and business address required'],
+    documents:['Aadhaar Card','Udyam/GST Certificate','Bank account','Business proof','Product photos'],
+    steps:['Register enterprise in MSME portal','Submit branding and packaging proposal','Upload product and registration documents','Verification and approval','Grant credited to business account'],
+    url:'https://msme.gov.in',officialSource:'msme.gov.in',
+    verified:'2024-05-14',level:'Central',target:'MSME owners',match:87
+  },
+  {
+    id:18, category:'senior', icon:'👴', iconClass:'edu',
+    name:'Senior Citizens Free Medical Travel Support',
+    nameTamil:'முதியோர்களுக்கு இலவச மருத்துவ பயண உதவி',
+    dept:'Health and Welfare Department, Tamil Nadu',
+    desc:'Support for senior citizens to travel for medical treatment through travel assistance and ambulance coordination.',
+    descTamil:'மருத்துவ சிகிச்சைக்காக வெளி மாவட்டங்களுக்கு செல்லும் முதியோர்களுக்கு பயண உதவி மற்றும் ஆம்புலன்ஸ் ஒருங்கிணைப்பு.',
+    benefit:'Free/partial travel support for treatment visits',
+    tags:['Senior','Medical','Travel'],tagClass:'tag-edu',
+    eligibility:['Senior citizen aged 60+','Medical referral or treatment requirement','Low-income or dependent family priority','Valid identity proof required'],
+    documents:['Aadhaar Card','Age Proof','Doctor referral letter','Bank Account','Residence proof'],
+    steps:['Apply through district welfare office or hospital referral desk','Attach medical certificate and referral','Submit request for travel assistance','Verification and travel approval','Support issued via travel or ambulance facility'],
+    url:'https://www.tn.gov.in',officialSource:'tn.gov.in',
+    verified:'2024-04-22',level:'State',target:'Senior citizens',match:80
+  }
+];
+
+const EXTRA_SCHEME_NAMES = {
+  education: [
+    'National Scholarship for OBC Students', 'Minority Merit Scholarship', 'State Education Fee Reimbursement',
+    'Merit-Cum-Means Scholarship', 'Higher Education Support for Girls', 'ST Post-Matric Bonus',
+    'Backward Class Hostel Assistance', 'Single Girl Child Education Grant', 'Disabled Student Learning Aid',
+    'Rural Student Transport Support', 'Science Talent Development Grant', 'School Fee Relief for BPL Families',
+    'Digital Education Device Support', 'College Book Allowance Scheme', 'Doctoral Research Fellowship',
+    'Computer Lab Modernization Grant', 'Women STEM Scholarship', 'Nursing Education Assistance', 'Polytechnic Fee Support',
+    'Border Area Student Incentive', 'School Uniform Assistance', 'Scholarship for Tribal Students', 'Rural School Hostel Grant',
+    'Higher Secondary Coaching Support', 'Teacher Training Fellowship', 'Skill Link Education Bonus', 'Career Guidance Scholarship',
+    'University Innovation Award', 'Research Travel Grant', 'School Digital Access Grant', 'ITI Fee Refund',
+    'Rural College Hostel Grant', 'Studentship Renewal Support', 'Back-to-School Support Grant', 'ST/SC Girls Hostel Subsidy',
+    'Distance Learning Equipment Support', 'Learning Disability Assessment Grant', 'Career Readiness Bonus', 'School Bus Fee Reimbursement',
+    'Urban Student Transport Assistance', 'Girls Computer Literacy Reward', 'MSME Internship Scholarship', 'Higher Education Fee Waiver',
+    'Hostel Maintenance Support', 'Model School Excellence Scholarship', 'Special Coaching Assistance', 'Exam Fee Reimbursement'
+  ],
+  agriculture: [
+    'Farm Mechanization Subsidy', 'Soil Health Card Grant', 'Sustainable Farming Incentive', 'Drip Irrigation Support',
+    'Dairy Farmer Development Scheme', 'Agriculture Loan Waiver Relief', 'Poultry Farmer Assistance', 'Fodder Cultivation Support',
+    'Rainwater Harvesting Grant', 'Crop Insurance Top-up Scheme', 'Organic Farming Certification Aid', 'Bee-Keeping Support Programme',
+    'Milch Animal Nutrition Grant', 'Seed Replacement Assistance', 'Post-Harvest Storage Subsidy', 'Agri-Input Support',
+    'Compost Unit Support Scheme', 'Horticulture Orchard Development', 'Farm Pond Construction Aid', 'Farm Waste Management Incentive',
+    'Greenhouse Establishment Support', 'Fertility Advisory Support', 'Climate Smart Irrigation Grant', 'Small Farm Equipment Loan',
+    'Mushroom Cultivation Assistance', 'Sericulture Development Aid', 'Aquaculture Support Program', 'Vegetable Cluster Support',
+    'Agri-Processing Unit Subsidy', 'Crop Rotation Incentive', 'Rural Cold Storage Assistance', 'Cold Storage Voucher Scheme',
+    'Farm Safety Equipment Support', 'Kisan Credit Card Top-Up Grant', 'Biofertilizer Support Program', 'Pest Management Subsidy',
+    'Farm Pond Maintenance Grant', 'Shelter for Livestock Scheme', 'Agri-Drone Pilot Subsidy', 'Water Saving Irrigation Bonus',
+    'Integrated Farming Support Scheme', 'Dryland Crop Resilience Grant', 'Rice Productivity Booster Scheme', 'Fruit Orchard Expansion Support',
+    'Gujarat-style Climate Risk Relief Grant', 'Tillage Equipment Subsidy', 'Fertilizer Quality Support Program', 'Vegetable Cold Chain Voucher'
+  ],
+  women: [
+    'Women Self-Help Group Revolving Fund', 'Working Women Hostel Support', 'Women Entrepreneurship Loan Scheme',
+    'Maternity Assistance for First-Time Mothers', 'Maternal Health Transport Support', 'Women Skill Development Grant',
+    'Legal Assistance for Women', 'Widow Pension Support', 'Domestic Violence Recovery Assistance',
+    'Women Safety Device Subsidy', 'Girl Child Education Support', 'Women Nutrition Booster Program',
+    'Balika Samridhi Support', 'Home Based Work Credit Scheme', 'Women Leadership Fellowship', 'Tailoring Skill Subsidy',
+    'Caregiver Support Grant', 'Women’s Digital Literacy Scheme', 'Rural Women Livelihood Support', 'Safe Transport For Women',
+    'Early Childhood Empowerment Scheme', 'Women Cooperative Grant', 'Health Insurance for Single Women', 'Food Security Top-up for Women',
+    'Microenterprise Kit Support', 'AIDS Awareness and Relief Scheme', 'Victim Rehabilitation Assistance', 'Women’s Legal Aid Fund',
+    'Women Family Emergency Support', 'Pregnancy Nutrition Grant', 'Junior Girl Child Support', 'Women STEM Skill Boost',
+    'Women’s Rights Support Scheme', 'Crisis Support for Women Survivors', 'Home-Based Worker Subsidy', 'Rural Women Enterprise Loan',
+    'Women Farm Producer Grant', 'Single Mother Education Aid', 'Women Safety Hotline Relief', 'Rural Women Nutrition Support',
+    'Women Artisan Credit Boost', 'Caregiver Relief for Women', 'Women Recovery Assistance Grant', 'Women Cooperative Logistics Support'
+  ],
+  employment: [
+    'Skill India Placement Support', 'NVQ Training Fee Reimbursement', 'Unemployed Youth Assistance',
+    'Rural Employment Guarantee Relief', 'Technical Apprenticeship Stipend', 'Women Job Readiness Grant',
+    'Construction Labour Support', 'Digital Skills Employment Subsidy', 'Night Shift Transport Support', 'Industrial Training Scholarship',
+    'Career Switch Coach Grant', 'Job Search Assistance Programme', 'Youth Employment Bridge Scheme', 'Warehouse Worker Support',
+    'Driver Skill Training Grant', 'Solar Technician Incentive', 'Hospitality Training Subsidy', 'Retail Skill Development Program',
+    'Agriculture Processing Jobs Scheme', 'Remote Work Setup Support', 'Urban Livelihood Support', 'Auto Driver Upgrade Assistance',
+    'Migrant Workers Relief Grant', 'Basic IT Certification Support', 'Skill Bootcamp Stipend', 'Placement Guarantee Assistance',
+    'Women Apprenticeship Allowance', 'Labour Safety Gear Subsidy', 'Employment Support for Disabled Youth',
+    'Daily Wage Support Scheme', 'Short-Term Placement Support', 'Rural Labour Transport Benefit', 'Youth Career Mentorship Grant',
+    'Railway Coach Driver Skill Scheme', 'Local Factory Training Subsidy', 'Freelancer Starter Support', 'Women IT Certification Grant',
+    'Industrial Safety Training Grant', 'Rural Placement Referral Support', 'Youth Startup Mentorship Stipend', 'Skilled Trades Support Program',
+    'Return-to-Work Recovery Grant', 'Live-in Labour Support Scheme', 'Warehouse Logistics Skills Bonus', 'Women Tech Placement Subsidy'
+  ],
+  health: [
+    'Cancer Treatment Assistance', 'Dialysis Support Programme', 'TB Recovery Care Fund', 'Mental Health Counselling Grant',
+    'Senior Health Checkup Scheme', 'Maternity Health Insurance Add-on', 'Women Surgical Support', 'Emergency Ambulance Support',
+    'Vision Care Relief', 'Diabetes Care Assistance', 'Rehabilitation Support Fund', 'Chronic Illness Medication Grant',
+    'Telemedicine Access Support', 'Newborn Care Assistance', 'Infertility Treatment Grant', 'Mobile Health Clinic Support',
+    'Blood Donation Incentive', 'Eye Surgery Recovery Fund', 'Orthopedic Aid Scheme', 'Cardiac Support Programme',
+    'Hearing Aid Assistance', 'Mental Wellness Support', 'Pediatric Health Grant', 'Post-Surgery Recovery Benefit',
+    'Community Health Volunteer Incentive', 'Home Nursing Aid', 'Rural Health Screening Grant', 'Cancer Screening Support',
+    'Health Insurance Premium Subsidy', 'Physiotherapy Cost Support', 'Emergency Family Health Relief', 'Antenatal Care Assistance',
+    'Maternity Transport Reimbursement', 'Medical Equipment Refill Support', 'Disease Prevention Screening Grant', 'Home-Based Elder Treatment Support',
+    'Rural TB Support Follow-up Grant', 'Neonatal Care Assistance', 'Nutritional Therapy Support', 'Telehealth Device Subsidy',
+    'Emergency Blood Transport Support', 'Community Health Nutrition Grant', 'Chronic Care Incentive Program', 'Home Dialysis Support Assistance'
+  ],
+  housing: [
+    'Urban Slum Housing Upgrade', 'Rural House Repair Subsidy', 'Flood Relief Housing Assistance', 'Women Headed Household Housing Support',
+    'Low-Cost Housing Loan Assistance', 'Rent Support for Migrant Families', 'Fire Victim Shelter Grants', 'Home Electrification Aid',
+    'Sanitation Upgrade Support', 'Habitat Improvement Programme', 'House Plot Allocation Support', 'Disaster Recovery Shelter Grant',
+    'Bathroom Renovation Subsidy', 'Rooftop Solar Housing Support', 'Single Parent Housing Grant', 'Rural Kitchen Renovation Aid',
+    'Water Connection Subsidy', 'Pucca Roof Repair Grant', 'Hut-to-Home Conversion Scheme', 'Grameen Housing Maintenance Support',
+    'Temporary Shelter Relief', 'Resettlement Housing Aid', 'Community Toilets Upgrade Fund', 'Independent Living Housing Grant',
+    'Fisherfolk Housing Support', 'Homeless Family Assistance', 'Urban Rental Assistance', 'Household Plumbing Support',
+    'Roof Leak Repair Grant', 'Family Shelter Upgrade', 'Community Housing Repair Fund', 'Rural Street Light Support',
+    'Community Water Tank Support', 'Portable Shelter Relief', 'Home Upgrade Maintenance Grant', 'Flood Proofing Assistance',
+    'Rural Toilet Upgrade Support', 'Home Electrification Relief Grant', 'Storm Damage House Repair Aid', 'Landless Family Housing Assistance',
+    'Urban Rental Relief Voucher', 'Shelter Repair Assistance', 'Waterline Connection Subsidy', 'Community Roof Repair Support'
+  ],
+  business: [
+    'MSME Working Capital Support', 'Startup Innovation Grant', 'Micro Enterprise Loan Scheme', 'Women Vendor Credit Assistance',
+    'Cooperative Business Credit Support', 'Cluster Development Support', 'Agri-Business start-up subsidy', 'Handicraft Export Incentive',
+    'Digital Market Access Grant', 'Retail Business Renovation Aid', 'Tribal Enterprise Assistance', 'Rural Service Business Support',
+    'Food Processing Unit Grant', 'Women Artisan Credit Program', 'Export Readiness Subsidy', 'Vendor Digital Payments Support',
+    'Tool Kit Support for Craftsmen', 'Local Brand Promotion Fund', 'Cold Chain Setup Assistance', 'Plastic Reuse Enterprise Support',
+    'Packaging Upgrade Support', 'Business Continuity Relief', 'Community Market Stall Grant', 'Taxi Driver Enterprise Aid',
+    'Courier Service Microloan', 'Street Vendor Expansion Support', 'Bulk Buying Cooperative Support', 'Startup Patent Reimbursement',
+    'Warehouse Operation Subsidy', 'Women Cooperative Branding Grant', 'Digital Bookkeeping Support', 'Product Packaging Assistance',
+    'Local Market Stall Grant', 'Village Enterprise Assistance', 'Retail Tech Upgrade Support', 'Branding and Packaging Help',
+    'Women Vendor Digital Payments Grant', 'Cooperative Transport Subsidy', 'Micro Food Unit Support', 'Youth Retail Startup Aid',
+    'Seasonal Business Relief Grant', 'Rural Market Access Support', 'Artisan Tool Kit Subsidy', 'Business Advisory Voucher'
+  ],
+  disability: [
+    'Disability Assistive Device Grant', 'Accessible Transport Support', 'Skill Training for Persons with Disability',
+    'Education Support for Disabled Students', 'Mobility Aid Subsidy', 'Home Modification Grant', 'Disability Pension Top-up',
+    'Cognitive Rehabilitation Support', 'Specialized Medical Equipment Assistance', 'Inclusive Employment Subsidy',
+    'Communication Device Assistance', 'Wheelchair Battery Replacement Support', 'Braille Learning Material Grant', 'Speech Therapy Support',
+    'Community Inclusion Grant', 'Assistive Technology Loan', 'Disability Vocational Support', 'Hearing Device Support',
+    'Accessibility Audit Grant', 'Caregiver Support for Disability', 'Rehabilitation Center Funding', 'Adaptive Sports Grant',
+    'Rural Mobility Assistance', 'Disabled Entrepreneurship Support', 'Emergency Disability Relief', 'Personal Care Support',
+    'Accessible Hostel Support', 'Sensory Therapy Support', 'Home Care Device Grant', 'Disability Legal Aid Programme',
+    'Adaptive Transport Subsidy', 'Communication Support Grant', 'Special Education Book Aid', 'Disability Benefit Card Top-Up',
+    'Orthopedic Support Assistance', 'Speech Device Subsidy', 'Accessible School Transport Grant', 'Disability Caregiver Relief',
+    'Inclusive Digital Learning Aid', 'Mobility Device Replacement Grant', 'Family Counselling Support', 'Home Assistive Living Grant'
+  ],
+  senior: [
+    'Senior Citizens Health Insurance Add-on', 'Elderly Care Support Programme', 'Home Nurse Assistance', 'Senior Digital Literacy Grant',
+    'Community Elder Support Scheme', 'Caregiver Support Assistance', 'Winter Relief for Senior Citizens', 'Medicine Delivery Support',
+    'Day Care Center Subsidy', 'Pension Top-up for Widows', 'Senior Companion Support', 'Elderly Nutrition Program',
+    'Home Safety Upgrade Grant', 'Disease Screening Support', 'Mobility Device Grant', 'Senior Travel Assistance',
+    'Recreational Activity Support', 'Legal Aid for Seniors', 'Elder Wellness Checkup', 'Emergency Support for Widows',
+    'Telecare Monitoring Benefit', 'Medication Reminder Scheme', 'Community Care Support', 'Senior Festival Relief Fund',
+    'House Help Support', 'Aged Person Assistance', 'Grandparent Care Voucher', 'Senior Utility Support Fund',
+    'Companion Care Transport Grant', 'Elderly Safety Device Subsidy', 'Medicine Reminder Service', 'Home Maintenance Support',
+    'Community Wellness Program', 'Senior Nutrition Food Kit', 'Home Security Upgrade', 'Elderly Social Support Grant',
+    'Senior Computer Literacy Support', 'Elderly Transport Relief Grant', 'Caregiver Training Assistance', 'Senior Social Inclusion Program',
+    'Pension Top-up for Widows', 'Senior Nutrition Delivery Scheme', 'Senior Legal Access Support', 'Community Elder Care Voucher'
+  ],
+  finance: [
+    'Emergency Relief Fund', 'Microcredit for Low-Income Households', 'Women’s Savings Match Scheme', 'Small Business Loan Guarantee',
+    'Interest Subsidy for Education Loans', 'Rural Savings Incentive', 'Family Emergency Assistance', 'Farm Credit Relief Scheme',
+    'Insurance Premium Support', 'Cashless Health Savings Top-up', 'Grain Bank Support', 'Monthly Household Stability Grant',
+    'Loan Interest Waiver for NHG', 'Emergency Medical Credit Support', 'Small Farmer Credit Relief', 'Household Repair Loan Subsidy',
+    'Savings Bond Bonus Program', 'Widow Emergency Fund', 'Community Security Deposit Grant', 'Risk Coverage Voucher',
+    'Festival Expense Support', 'Micro Insurance Premium Subsidy', 'Digital Payment Cashback Grant', 'Flood Relief Cash Support',
+    'Low-income Pension Backup', 'Transport Fare Support', 'Household Debt Relief', 'Rural Credit Guarantee',
+    'Emergency Family Cash Grant', 'Debt Moratorium Support', 'Short-Term Relief Voucher', 'Utility Bill Assistance',
+    'Community Relief Disbursement', 'Household Essentials Grant', 'Income Support Voucher', 'Rural Savings Bonus',
+    'Emergency Disaster Relief Grant', 'Seasonal Income Support Top-up', 'Utility Deposit Assistance', 'Medical Debt Relief Voucher',
+    'Household Savings Booster Scheme', 'Cashflow Stabilization Grant', 'Relief Interest Subsidy', 'Income Guarantee Support Fund'
+  ]
+};
+
+const PREMIUM_GENERATED_UPGRADES = [
+  { benefit:'₹12,000 – ₹60,000 per year', target:'School and college students', tags:['Education','Scholarship','Support'], desc:'Scholarship support for meritorious and low-income students to continue school, college, and technical education without financial stress.', descTamil:'நல்ல மதிப்பெண்கள் மற்றும் குறைந்த வருமானம் கொண்ட மாணவர்களுக்கு பள்ளி, கல்லூரி மற்றும் தொழில்நுட்பக் கல்வியை தொடர உதவும் உதவித்தொகை.', eligibility:['Student enrolled in recognized school or college','Annual family income within scheme limit','Minimum qualifying marks required','Active attendance and proper documentation'], documents:['Aadhaar Card','Previous mark sheet','Income certificate','Bank passbook','Bonafide certificate'], steps:['Visit department portal or district education office','Select the scholarship category','Complete online application','Upload marks and income proof','Track approval and receive benefit through bank transfer'], match:95 },
+  { benefit:'₹6,000 per year in 3 installments', target:'Small and marginal farmers', tags:['Agriculture','Income Support','Farmer'], desc:'Direct income support for eligible farmer families to sustain agricultural operations and meet seasonal expenses.', descTamil:'தகுதியான விவசாய குடும்பங்களுக்கு விவசாய நடவடிக்கைகள் மற்றும் பருவகால செலவுகளுக்கு உதவும் நேரடி வருமான ஆதரவு.', eligibility:['Owns or cultivates eligible agricultural land','Valid Aadhaar-linked bank account','Not an income-tax payer','Farmer family must be registered for the scheme'], documents:['Aadhaar Card','Land records','Bank account details','Mobile number','Farmer identity proof'], steps:['Register on PM-KISAN portal','Verify land and Aadhaar details','Submit farmer registration form','Await approval and update status','Receive installment directly in bank account'], match:94 },
+  { benefit:'₹5,000 – ₹25,000 support', target:'Women entrepreneurs and SHGs', tags:['Women','Women Empowerment','Support'], desc:'Support for women-led self-help groups and micro-enterprises to expand income-generating activities and digital selling.', descTamil:'பெண்கள் தலைமையிலான சுய உதவிக் குழுக்கள் மற்றும் நுண் தொழில்களுக்கு வருமானம் உருவாக்கும் நடவடிக்கைகளை விரிவாக்கும் வகையில் உதவி.', eligibility:['Women-led SHG or enterprise','Active business or group activity','Registered with district office or portal','Bank account linked to beneficiary or group'], documents:['Aadhaar Card','SHG registration proof','Bank passbook','Group resolution letter','Business activity proof'], steps:['Register through district women development office','Submit enterprise profile and group details','Attach group resolution and bank details','Await district verification','Receive support after approval'], match:92 },
+  { benefit:'Up to ₹25 lakh project subsidy', target:'First-time entrepreneurs', tags:['Employment','MSME','Subsidy'], desc:'Financial assistance for new micro-enterprises and skilled self-employment units to establish a viable business.', descTamil:'குறைந்த முதலீட்டில் புதிய நுண் தொழில்களை தொடங்க உதவும் மானியக் கடன் மற்றும் நிதி உதவி.', eligibility:['Age 18 years or above','New enterprise or first-time applicant','Minimum education qualification as per scheme norms','Bankable project report and business plan'], documents:['Aadhaar Card','PAN Card','Project report','Bank statements','Business registration proof'], steps:['Apply on KVIC / MSME portal','Upload project proposal and identity documents','Submit to bank for appraisal','Receive sanction and subsidy','Establish enterprise and track disbursement'], match:90 },
+  { benefit:'₹5 lakh annual health cover', target:'Low-income families', tags:['Health','Insurance','Hospitalization'], desc:'Cashless secondary and tertiary hospitalization cover for eligible families to reduce medical debt and improve access to care.', descTamil:'தகுதியான குடும்பங்களுக்கு இரண்டாம் மற்றும் மூன்றாம் நிலை மருத்துவ சிகிச்சைக்கான நிதி உதவி மற்றும் காசில்லா சிகிச்சை.', eligibility:['Family listed in eligible beneficiaries list','Annual income and family criteria as per scheme','No duplicate active health insurance cover','Valid beneficiary identification'], documents:['Aadhaar Card','PMJAY card or beneficiary ID','Ration card if applicable','Hospital registration details'], steps:['Check eligibility and generate card at CSC or portal','Visit empaneled hospital','Provide Ayushman card during admission','Complete hospital formalities','Receive cashless treatment support'], match:91 },
+  { benefit:'Loans up to ₹5 lakh', target:'SC/ST entrepreneurs', tags:['Business','SC/ST','Credit'], desc:'Low-interest business credit and working capital support for SC/ST entrepreneurs starting or expanding rural and urban enterprises.', descTamil:'SC/ST தொழில்முனைவோருக்கு குறைந்த வட்டி கடன் மற்றும் பணப்புழக்க உதவி.', eligibility:['SC/ST category applicant','Tamil Nadu resident','Age 18 to 55','No existing default or active loan issue'], documents:['Aadhaar Card','Caste certificate','Income certificate','Bank account details','Business proposal'], steps:['Apply at district welfare office','Submit income and caste documents','Business plan review by committee','Loan sanction and documentation','Disbursement to bank account'], match:88 },
+  { benefit:'₹1,000 per month', target:'Women head of household', tags:['Women','Monthly Support','Tamil Nadu'], desc:'Monthly income support for women-led households from economically weaker sections to improve household stability and essentials access.', descTamil:'பொருளாதாரத்தில் பின்தங்கிய குடும்பங்களில் பெண்கள் தலைமை தாங்கும் குடும்பங்களுக்கு மாதாந்திர ஆதரவு.', eligibility:['Women aged 21 and above','Tamil Nadu resident','Eligible household income category','Valid ration card or residency proof'], documents:['Aadhaar Card','Ration card','Bank passbook','Proof of residence','Age proof'], steps:['Register at Sevai Center or CSC','Submit family and income details','Complete verification','Approve beneficiary in portal','Monthly transfer to linked bank account'], match:90 },
+  { benefit:'Free certification and field training', target:'Farmer groups and rural workers', tags:['Agriculture','Training','Support'], desc:'Hands-on agricultural training and extension support to improve crop productivity, water use, and market readiness.', descTamil:'விவசாய உற்பத்தி, நீர் மேலாண்மை மற்றும் சந்தை தயார்நிலை மேம்பாட்டிற்காக பயிற்சி மற்றும் ஆலோசனை.', eligibility:['Farmer or registered rural producer','Local resident in scheme area','Interest in modern cultivation techniques','Availability for training sessions'], documents:['Aadhaar Card','Land records','Farmer ID','Residence proof','Passport-size photo'], steps:['Contact nearest KVK or agriculture office','Check scheduled training batches','Complete registration form','Attend practical training','Receive course certificate and follow-up guidance'], match:87 },
+  { benefit:'₹1.2 lakh to ₹1.3 lakh', target:'Rural BPL families', tags:['Housing','Rural','Support'], desc:'Financial support for constructing pucca houses and improving shelter security for eligible rural households.', descTamil:'கிராமப்புற BPL குடும்பங்களுக்கு புனித வீடு கட்டுவதற்கான நிதி உதவி.', eligibility:['Rural homeless or kutcha house family','Listed in eligible rural list','No existing pucca house','Valid land or structure proof'], documents:['Aadhaar Card','SECC listings','House photos','Bank account','Land records'], steps:['Check beneficiary list on portal','Register with Gram Panchayat or block office','Submit structure and land documents','Approval and sanction of assistance','Installment-based release for house construction'], match:89 },
+  { benefit:'₹200 to ₹500 per month', target:'Senior citizens below poverty line', tags:['Senior','Pension','Support'], desc:'Monthly social pension for eligible elderly citizens to support medical, food, and household expenses.', descTamil:'வறுமை நிலையில் உள்ள முதியோர்களுக்கு மாதாந்திர ஓய்வூதியம் வழங்குவதன் மூலம் அடிப்படை செலவுகள் நிறைவடைகின்றன.', eligibility:['Age 60 years and above','BPL classification or proof of income','No alternate pension eligibility','Indian citizenship'], documents:['Aadhaar Card','Age proof','BPL card or income proof','Bank passbook','Residence certificate'], steps:['Apply at Gram Panchayat or district office','Submit age and income documents','Verify pension status','Approval by authority','Monthly direct credit to bank account'], match:92 },
+  { benefit:'₹5,000 – ₹25,000 assistance', target:'Girl students from low-income families', tags:['Education','Girls','Support'], desc:'Educational incentive for girls to improve continuity in school and motivate transition to higher education and skill programs.', descTamil:'குறைந்த வருமானம் கொண்ட சிறுமிகளின் பள்ளி தொடர்ச்சி மற்றும் உயர்கல்வியை ஊக்குவிக்கும் கல்வி உதவி.', eligibility:['Girl student in Tamil Nadu','School or college enrollment required','Income eligibility and attendance criteria apply','Parent or guardian consent required'], documents:['Aadhaar Card','School ID','Income certificate','Bank passbook','Bonafide certificate'], steps:['Contact school or district education office','Submit student details and income proof','Complete beneficiary verification','Approval and sanction by office','Receive transfer to parent or student account'], match:89 },
+  { benefit:'₹15,000 – ₹75,000 subsidy', target:'Farmers with water-stressed land', tags:['Agriculture','Water','Subsidy'], desc:'Support for farm pond renovation, water harvesting structures, and efficient irrigation investments to improve resilience.', descTamil:'குட்டை பாசனத்தை புத்துயிர் பெறச் செய்வதற்கும் நீர் சேமிப்பை மேம்படுத்துவதற்கும் உதவும் மானியம்.', eligibility:['Registered farmer or land owner','Owns eligible farmland','Farm pond or irrigation structure present','Priority for dry and drought-prone lands'], documents:['Aadhaar Card','Land records','Farm pond details','Bank account','Farmer ID'], steps:['Submit application at agriculture office','Upload land and pond details','Field verification by department','Approval and subsidy release','Complete site work and monitor output'], match:86 },
+  { benefit:'₹10,000 – ₹50,000 support', target:'Women SHGs and rural enterprises', tags:['Women','SHG','Digital'], desc:'Digital marketing and e-commerce support for women’s self-help groups to improve market access and product sales.', descTamil:'பெண்கள் சுய உதவிக் குழுக்களின் தயாரிப்பு சந்தைப்படுத்தல், மேம்பாடு, மற்றும் டிஜிட்டல் விற்பனை திறனை மேம்படுத்துதல்.', eligibility:['Registered women SHG or women-managed enterprise','Active production or service activity','Bank account and registration details available','District or local approval required'], documents:['Aadhaar Card','SHG registration proof','Bank passbook','Business activity proof','Product or service records'], steps:['Register at rural development office','Submit business and digital marketing plan','Attach product references and bank data','Approval and onboarding to digital channels','Funds released after verification'], match:88 },
+  { benefit:'₹3,000 – ₹8,000 monthly stipend', target:'Rural and semi-urban youth', tags:['Employment','Training','Youth'], desc:'Structured apprenticeship placements and stipends for youth to gain practical workplace experience and job readiness.', descTamil:'இளைஞர்கள் தொழில் அனுபவம் பெறவும், வேலைத் தயார்நிலையை மேம்படுத்தவும் பயிற்சி ஒப்பந்தம் மற்றும் உதவித்தொகை.', eligibility:['Age 18 to 35','Rural or semi-urban resident','Eligible education or training background','Interested in work-based learning'], documents:['Aadhaar Card','Education certificates','Residence proof','Bank account','Photo ID'], steps:['Register in employment portal or office','Choose suitable apprenticeship role','Submit documents and training agreement','Attend workplace learning','Receive stipend after monthly verification'], match:84 },
+  { benefit:'Free screening and follow-up care', target:'Children and adolescent groups', tags:['Health','Children','Screening'], desc:'Early child health screening and referral support to identify malnutrition, developmental issues, and common illnesses promptly.', descTamil:'குழந்தைகளின் ஊட்டச்சத்து, வளர்ச்சி மற்றும் பொதுவான உடல்நல சிக்கல்களை விரைவாக கண்டறியும் சுகாதார பரிசோதனை.', eligibility:['Children and school-going adolescents','Priority to high-risk and tribal communities','Parent or guardian consent needed','School or anganwadi registration preferred'], documents:['Aadhaar Card','Child health record','School ID or anganwadi details','Parent ID','Referral note if any'], steps:['Visit PHC or school camp','Complete health screening tests','Receive referral if required','Follow up with local health worker','Track treatment and support options'], match:83 },
+  { benefit:'₹20,000 – ₹80,000 repair assistance', target:'Low-income rural households', tags:['Housing','Repair','Rural'], desc:'Affordable assistance to repair damaged roofs, walls, toilets, and basic home infrastructure in vulnerable rural homes.', descTamil:'கிராமப்புற வீடுகளில் முக்கிய கட்டமைப்பு பழுதுபார்ப்பு மற்றும் அடிப்படை வசதிகளை மேம்படுத்துவதற்கு நிதி உதவி.', eligibility:['Household in rural area with structural damage','Low income or vulnerable section priority','Valid identity and address proof','No existing grant duplication'], documents:['Aadhaar Card','House photos','Residence proof','Bank passbook','Family ID card'], steps:['Apply via local panchayat or rural office','Upload photos and household details','Verification and site assessment','Approval and estimate sanction','Release funds after repair completion'], match:82 },
+  { benefit:'₹25,000 – ₹1,20,000 grant', target:'MSME and local producers', tags:['Business','MSME','Branding'], desc:'Support for packaging, branding, and digital market readiness to help small businesses become more competitive and sales-ready.', descTamil:'சிறு தொழில்களின் பிராண்டிங், பேக்கேஜிங் மற்றும் டிஜிட்டல் சந்தை தயார்நிலை மேம்பாட்டிற்கான உதவி.', eligibility:['Registered MSME or producer unit','Business operation active for at least one year','Valid registration and bank account','Market readiness or product improvement plan'], documents:['Aadhaar Card','Udyam or GST proof','Bank statements','Product photos','Business registration certificate'], steps:['Submit proposal through MSME portal','Attach business and product details','Verification and category approval','Grant sanction after assessment','Use funds for packaging and branding upgrade'], match:87 },
+  { benefit:'Travel and referral support for treatment', target:'Senior citizens needing care', tags:['Senior','Medical','Support'], desc:'Travel and referral assistance for elderly citizens who need treatment outside their district or local area.', descTamil:'மருத்துவ சிகிச்சைக்காக வெளி மாவட்டங்களுக்கு செல்லும் முதியோர்களுக்கு பயண மற்றும் பரிந்துரை உதவி.', eligibility:['Senior citizen aged 60+','Doctor referral or treatment requirement','Low-income or dependent household priority','Valid identity and address proof'], documents:['Aadhaar Card','Age proof','Doctor referral letter','Bank account','Residence proof'], steps:['Apply through district welfare office or hospital desk','Attach treatment and referral documents','Eligibility verification by authority','Approval for travel or ambulance support','Utilize support for care visit'], match:80 },
+  { benefit:'₹10,000 – ₹1,50,000 support', target:'Persons with disabilities', tags:['Disability','Assistive Devices','Support'], desc:'Financial support for assistive devices, therapy, mobility support, and inclusive education needs of persons with disabilities.', descTamil:'மாற்றுத்திறனாளிகளுக்கு உதவி சாதனங்கள், சிகிச்சை, இயக்க உதவி மற்றும் உள்ளடக்கிய கல்வி சேவைகளுக்கு நிதி உதவி.', eligibility:['Person with disability certificate','Income eligibility or category-based priority','Need assessed by district welfare office','Valid identity and residence proof'], documents:['Aadhaar Card','Disability certificate','Income proof','Bank passbook','Medical recommendation'], steps:['Register through disability welfare office','Upload medical and identity documents','Assessment and eligibility check','Choose support items or services','Receive financial assistance or device support'], match:86 },
+  { benefit:'₹50,000 – ₹2,00,000 support', target:'Small enterprises and agri-businesses', tags:['Business','Agri-Business','Working Capital'], desc:'Working capital and equipment support for micro-enterprises, farm-linked businesses, and producer groups to stabilize operations.', descTamil:'நுண் தொழில்கள், விவசாய-தொடர்புடைய தொழில்கள் மற்றும் உற்பத்தியாளர்களுக்கு பணப்புழக்க ஆதரவு.', eligibility:['Registered enterprise or producer group','Business activity active and viable','Bank account and registration documents available','Need-based application with basic revenue plan'], documents:['Aadhaar Card','Business registration proof','Bank statement','GST or Udyam details','Income and expense records'], steps:['Apply through district MSME or agri office','Submit business profile and revenue plan','Verification and field inspection','Sanction and disbursement','Track usage and repayment obligations'], match:88 },
+  { benefit:'₹5,000 – ₹30,000 support', target:'Low-income households and workers', tags:['Finance','Relief','Emergency'], desc:'Emergency cash and debt-relief support for households facing medical, seasonal, or sudden livelihood shocks.', descTamil:'மருத்துவம், பருவகால வருமானம் அல்லது திடீர் சூழ்நிலை காரணமாக பாதிக்கப்படும் குடும்பங்களுக்கு அவசர நிதி உதவி.', eligibility:['Low-income household','Crisis or emergency situation confirmed','Valid address and identity proof','No duplicate active support under same category'], documents:['Aadhaar Card','Residence proof','Bank account','Income certificate if requested','Emergency note or hospital referral'], steps:['Apply through local welfare office or grievance portal','Attach emergency documents','Undergo verification and need assessment','Approval and relief sanction','Receive grant or voucher benefit'], match:82 },
+  { benefit:'₹5,000 – ₹40,000 support', target:'Widows and single women', tags:['Women','Pension','Support'], desc:'Targeted assistance for widowed women and single mothers to improve household stability and access to essentials.', descTamil:' விதவைகள் மற்றும் ஒற்றைப் பெற்றோர் பெண்களுக்கு குடும்ப பாதுகாப்பு மற்றும் அத்தியாவசிய தேவைகளை பூர்த்தி செய்ய உதவும் நிதி.', eligibility:['Widow, single parent, or destitute woman','Valid family record or death certificate','Eligible income category','Residence in the beneficiary state or district'], documents:['Aadhaar Card','Death certificate or family proof','Income certificate','Bank account','Residence proof'], steps:['Apply through district welfare office','Submit family records and proof','Verification by local authorities','Approval and sanction by department','Disbursement through bank transfer'], match:89 },
+  { benefit:'₹20,000 – ₹1,00,000 support', target:'Labourers and informal workers', tags:['Employment','Workers','Support'], desc:'Support for unorganized labourers to meet shelter, health, and daily livelihood needs during work gaps and emergencies.', descTamil:'தொழிலாளர்கள் மற்றும் முறைசாரா பணியாளர்களுக்கு வேலை இடைவெளி மற்றும் அவசர நேரங்களில் உதவும் நிதி சேவை.', eligibility:['Registered informal labourer or unorganized worker','Valid identity and address proof','Evidence of employment or income status','Need-based eligibility review'], documents:['Aadhaar Card','Work card or labour registration','Residence proof','Bank account','Income or wage record'], steps:['Register via labour portal or office','Submit work details and household information','Verification of labour status','Application processed for sanction','Funds credited after approval'], match:84 },
+  { benefit:'₹10,000 – ₹75,000 subsidy', target:'Farmers and rural producers', tags:['Agriculture','Irrigation','Support'], desc:'Support for drip irrigation, crop resilience measures, and water-saving equipment to reduce production losses and improve yield.', descTamil:'மழைநீர் சேமிப்பு, சொட்டு நீர்ப்பாசனம் மற்றும் பயிர் பாதுகாப்பிற்கான ஆதரவு.', eligibility:['Farmer or agrarian producer','Landholding in eligible district or block','Water-stressed or low-yield plot preference','Need-based technical approval required'], documents:['Aadhaar Card','Land records','Farm plan','Bank account','Photo of plot or irrigation setup'], steps:['Submit field and irrigation details','Department review and field inspection','Approval based on crop plan','Application sanction','Purchase and installation support release'], match:87 },
+  { benefit:'₹8,000 – ₹50,000 support', target:'Women artisans and home-based workers', tags:['Women','Artisan','Livelihood'], desc:'Credit and equipment support for women artisans, tailors, and home-based workers to improve productivity and market access.', descTamil:'பெண்கள் கைவினைஞர்கள், தையல் தொழிலாளர்கள் மற்றும் வீட்டிலிருந்து செய்யும் பணியாளர்களுக்கு உபகரண உதவி மற்றும் கடன்.', eligibility:['Women artisan or home-based worker','Valid identity and business profile','Need-based income category or group membership','Registration with local self-help or skill group'], documents:['Aadhaar Card','Skill or artisan certificate','Bank passbook','Residence proof','Business or work proof'], steps:['Register through district artisan or women development office','Submit skill and work profile','Receive assessment and credit sanction','Purchase equipment or materials','Track business growth after support'], match:85 },
+  { benefit:'₹3,000 – ₹15,000 support', target:'Students and youth in skill programs', tags:['Education','Skills','Career'], desc:'Short-term certification and placement-linked educational assistance for youth who need career transition support.', descTamil:'வேலைவாய்ப்புக்கு தயாராகும் இளைஞர்களுக்கு குறுகிய கால பயிற்சி மற்றும் தகுதி சார்ந்த உதவி.', eligibility:['Young person aged 18 to 35','School or diploma graduate','Skill training enrollment required','Priority to low-income and unemployed youth'], documents:['Aadhaar Card','Education certificate','Bank account','Training admission proof','Residence proof'], steps:['Choose a recognized skill training center','Apply with identity and education documents','Enroll in approved course','Submit training completion records','Receive support after course completion'], match:83 },
+  { benefit:'₹1 lakh to ₹3 lakh support', target:'Urban and rural housing applicants', tags:['Housing','Urban','Relief'], desc:'Housing support for families in need of repair, rental assistance, or transition to safe and permanent shelters.', descTamil:'பாதிக்கப்பட்ட குடும்பங்களுக்கு வீட்டுவசதி மேம்பாடு, வாடகை உதவி அல்லது பாதுகாப்பான வீடு மாற்றம்.', eligibility:['Eligible household in need of shelter improvement','Income category or vulnerability criteria apply','Valid residence and identity documentation','No duplicate benefit under same housing scheme'], documents:['Aadhaar Card','Residence proof','Family details','Bank account','House or rental documents'], steps:['Apply through urban or panchayat office','Attach household and income details','Verification and approval','Choose support option','Receive sanction for repairs or rent assistance'], match:84 },
+  { benefit:'₹20,000 – ₹80,000 support', target:'Households affected by weather or disasters', tags:['Housing','Disaster','Relief'], desc:'Temporary and permanent shelter assistance for families affected by floods, storms, or local calamities.', descTamil:'வெள்ளம், புயல் மற்றும் இயற்கை பேரிடரால் பாதிக்கப்பட்ட குடும்பங்களுக்கான வீட்டு நிவாரண உதவி.', eligibility:['Household affected by local disaster or severe weather','Valid local address and family identification','Priority for vulnerable and low-income families','Official disaster list or field verification'], documents:['Aadhaar Card','Disaster impact proof','Residence proof','Bank account','Household member list'], steps:['Register through district relief office','Submit impact and family details','Field verification by officials','Relief sanction and support category','Receive aid for repair or shelter upgrade'], match:81 },
+  { benefit:'₹5,000 – ₹30,000 grant', target:'Seniors and caregivers', tags:['Senior','Caregiver','Support'], desc:'Caregiver and elder support scheme designed to help senior citizens with daily care, medicine, and preventive wellness services.', descTamil:'முதியோர்களின் தினசரி பராமரிப்பு, மருந்து மற்றும் தடுப்பு சுகாதார தேவைகளுக்கு உதவும் திட்டம்.', eligibility:['Senior citizen or caregiver household','Low-income or elderly-dependent family','Need assessment through local welfare office','Valid active identity documentation'], documents:['Aadhaar Card','Age proof','Income proof','Bank passbook','Caregiver or family details'], steps:['Submit application at welfare office','Provide care need and family details','Department review and home assessment','Support approval and category assignment','Receive grant or service support'], match:80 },
+  { benefit:'₹25,000 – ₹1,00,000 support', target:'Farm operators and youth entrepreneurs', tags:['Business','Agriculture','Startup'], desc:'Support for agri-startups and small venture ideas linked with processing, storage, and local value addition.', descTamil:'விவசாய மதிப்பு கூட்டல், சேமிப்பு, மற்றும் சிறிய தொழில் வாடிக்கைகளுக்கு மானியம் மற்றும் கடன் உதவி.', eligibility:['Recognized agri or rural enterprise idea','Bankable business plan and identity proof','Applicant under eligible age and district norms','Proof of active investment intention'], documents:['Aadhaar Card','Business plan','Bank account','Project feasibility report','Identity and residence proof'], steps:['Apply through agri-innovation or MSME portal','Submit business proposal','Review and feasibility check','Sanction support and mentoring','Track project implementation post-disbursement'], match:87 },
+  { benefit:'₹1,000 – ₹10,000 assistance', target:'Students from vulnerable households', tags:['Education','Transport','Support'], desc:'Transport and hostel assistance for students facing distance and daily travel barriers to continue learning in schools and colleges.', descTamil:'தூரம் மற்றும் பயண செலவுகள் காரணமாக கல்வியை தொடர முடியாத மாணவர்களுக்கு போக்குவரத்து மற்றும் விடுதி உதவி.', eligibility:['Student enrolled in education institution','Family income or vulnerability criteria apply','Distance to institution is significant','Valid student identity and residence proof'], documents:['Aadhaar Card','Student ID','School or college proof','Residence proof','Bank account details'], steps:['Register through school or district education office','Submit travel and family details','Approval based on distance and income','Issue travel or hostel support','Track support disbursement'], match:80 },
+  { benefit:'₹5,000 – ₹50,000 support', target:'Women and single mothers', tags:['Women','Education','Care'], desc:'Education and care support for girls and mothers to improve school continuity, nutrition, and family stability.', descTamil:'சிறுமிகள் மற்றும் தாய்மார்களுக்கு கல்வி தொடர்ச்சி, ஊட்டச்சத்து மற்றும் குடும்ப நிலைத்தன்மையை மேம்படுத்தும் உதவி.', eligibility:['Woman or girl student from eligible household','Income-based or vulnerability-based criteria apply','School or college enrollment and attendance verification','Residence within scheme area'], documents:['Aadhaar Card','School records','Income proof','Bank passbook','Parent ID'], steps:['Apply through school or district office','Submit school and family records','Eligibility review and verification','Approval for education or care support','Transfer to parent or student account'], match:88 },
+  { benefit:'₹10,000 – ₹75,000 support', target:'Tribal and rural families', tags:['Agriculture','Tribal','Support'], desc:'Targeted support for tribal and backward families to improve livelihood, agriculture, and household income through welfare assistance.', descTamil:'பழங்குடியினர் மற்றும் பிற்படுத்தப்பட்ட குடும்பங்களுக்கு தொழில், விவசாயம், மற்றும் குடும்ப வருமானத்தை மேம்படுத்தும் உதவி.', eligibility:['Eligible tribal or backward community family','Valid identity, residence, and income records','Application through local welfare office','Need-based verification as per region'], documents:['Aadhaar Card','Community or caste certificate','Residence proof','Income record','Bank details'], steps:['Apply at district welfare office','Submit caste and community records','Approval and field verification','Support sanction based on need','Receive aid in account or through office'], match:82 },
+  { benefit:'₹15,000 – ₹80,000 support', target:'Fisherfolk and coastal workers', tags:['Agriculture','Livelihood','Coastal'], desc:'Assistance for fisherfolk communities to improve equipment, safety, and resilience in coastal and inland water livelihoods.', descTamil:'மீனவர் மற்றும் கடலோர குடும்பங்களுக்கு உபகரணங்கள், பாதுகாப்பு, மற்றும் வருமானத்தை மேம்படுத்தும் உதவி.', eligibility:['Fisherfolk or coastal worker registration required','Valid local identity and work record','Need-based support with safety or equipment review','Proof of livelihood activity'], documents:['Aadhaar Card','Fisher ID or registered worker proof','Residence proof','Bank details','Work activity documents'], steps:['Register with coastal welfare office','Provide vessel or equipment details','Field review and eligibility check','Approval and sanction','Disbursement for equipment or support'], match:82 },
+  { benefit:'₹12,000 – ₹70,000 support', target:'Farm families and SHGs', tags:['Agriculture','Women','Livelihood'], desc:'Group-based rural livelihood support for women farmers and SHGs to strengthen production, aggregation, and market access.', descTamil:'பெண்கள் விவசாயிகள் மற்றும் சுய உதவிக் குழுக்களுக்கு உற்பத்தி, சேகரிப்பு மற்றும் சந்தை அணுகலை ஊக்குவிக்கும் உதவி.', eligibility:['Women farmer, SHG member, or aggregate producer group','Active participation in agricultural activity','Valid identity and registration with local office','Need-based field review'], documents:['Aadhaar Card','SHG or farmer group registration','Land records or supply proof','Bank account','Resident proof'], steps:['Join local SHG or farmer collective','Submit activity and income details','Department verification and approval','Group support sanction','Receive support through group account'], match:86 },
+  { benefit:'₹10,000 – ₹60,000 support', target:'Women job seekers and trainees', tags:['Women','Training','Employment'], desc:'Support for women undergoing skill training and job-readiness programs to improve entry into formal and digital work opportunities.', descTamil:'பெண்கள் திறன் பயிற்சி, வேலை தயார்நிலை மற்றும் டிஜிட்டல் வேலை வாய்ப்புகளில் நுழைய ஊக்குவிக்கும் உதவி.', eligibility:['Women in age-eligible job-seeker group','Training approval and registration required','Income or category-based support if applicable','Valid identity proof'], documents:['Aadhaar Card','Training admission proof','Bank passbook','Income certificate if required','Residence proof'], steps:['Enroll in approved training program','Submit identity and training details','Verification by employment office','Support linked to training milestone','Receive stipend or reimbursement after completion'], match:84 },
+  { benefit:'₹5,000 – ₹30,000 assistance', target:'Rural youth and non-formal workers', tags:['Employment','Skill','Youth'], desc:'Bridge assistance for youth transitioning from informal work to stable employment through skills, placement, and transport support.', descTamil:'தொழில்சார்ந்த வேலைகளிலிருந்து நிலையான வேலைகளுக்கு மாறும் இளைஞர்களுக்கு பயிற்சி, வேலை மற்றும் பயண உதவி.', eligibility:['Rural youth or informal worker','Age between 18 and 35','Skill or employment transition interest','Identity and residence proof available'], documents:['Aadhaar Card','Birth or age proof','Bank details','Education or training proof','Residence certificate'], steps:['Register at local employment office','Select approved training or placement path','Submit documents and work history','Receive assistive support during transition','Track progress and job placement outcomes'], match:82 },
+  { benefit:'₹50,000 – ₹3,00,000 support', target:'Low-income families and entrepreneurs', tags:['Business','Loan','Support'], desc:'Credit-linked support for business expansion, vendor growth, and working capital needs for households with existing micro-enterprises.', descTamil:'முன்னரே செயல்படும் நுண் தொழில்களுக்கான பணப்புழக்க, விரிவாக்கம் மற்றும் வணிக வளர்ச்சிக்கான உதவி.', eligibility:['Existing business, vendor, or household enterprise','Valid identity and local business records','Need-based review and bank linkage','No severe loan default history'], documents:['Aadhaar Card','Business proof','Bank statements','Udyam or GST if available','Income and expense records'], steps:['Apply with enterprise profile at district office','Submit current business records','Eligibility review and business assessment','Sanction and link to bank account','Receive installments for working capital or expansion'], match:88 },
+  { benefit:'₹5,000 – ₹40,000 assistance', target:'People with disability and caregivers', tags:['Disability','Care','Support'], desc:'Support for caregiver costs, home-based assistance, and rehabilitation needs for people with disabilities living at home.', descTamil:'மாற்றுத்திறனாளிகள் வீட்டிலே வாழ்வதற்கான பராமரிப்பு, சிகிச்சை மற்றும் வீட்டு உதவி.', eligibility:['Person with disability or caregiver family','Need-based assessment by district welfare office','Valid identity and disability documents','Income or vulnerability criteria may apply'], documents:['Aadhaar Card','Disability certificate','Caregiver proof','Bank passbook','Residence proof'], steps:['Register through welfare office','Upload disability and care details','Assessment and category approval','Support sanction and service mapping','Receive grant or service support as approved'], match:84 }
+];
+
+const CATEGORY_META = {
+  education: { icon:'🎓', iconClass:'edu', tagClass:'tag-edu', dept:'Department of School and Higher Education', benefit:'₹10,000 – ₹1,00,000 per year', tags:['Education','Scholarship','Aid'], target:'Students and families' },
+  agriculture: { icon:'🌾', iconClass:'agri', tagClass:'tag-agri', dept:'Department of Agriculture and Farmers Welfare', benefit:'₹5,000 – ₹50,000 support', tags:['Farming','Support','Subsidy'], target:'Farmers and rural growers' },
+  women: { icon:'👩', iconClass:'women', tagClass:'tag-women', dept:'Women and Child Development Department', benefit:'₹2,000 – ₹60,000 support', tags:['Women','Aid','Support'], target:'Women and families' },
+  employment: { icon:'💼', iconClass:'emp', tagClass:'tag-emp', dept:'Labour and Employment Department', benefit:'₹3,000 – ₹75,000 support', tags:['Jobs','Training','Employment'], target:'Unemployed and skilled workers' },
+  health: { icon:'🏥', iconClass:'health', tagClass:'tag-health', dept:'Health and Family Welfare Department', benefit:'₹5,000 – ₹2,00,000 coverage', tags:['Healthcare','Insurance','Care'], target:'Families and vulnerable citizens' },
+  housing: { icon:'🏠', iconClass:'health', tagClass:'tag-health', dept:'Rural and Urban Development Department', benefit:'₹20,000 – ₹3,00,000 support', tags:['Housing','Repair','Relief'], target:'Low-income and vulnerable families' },
+  business: { icon:'🚀', iconClass:'biz', tagClass:'tag-biz', dept:'MSME and Industry Department', benefit:'₹25,000 – ₹5,00,000 loan support', tags:['Business','MSME','Credit'], target:'Entrepreneurs and vendors' },
+  disability: { icon:'♿', iconClass:'edu', tagClass:'tag-edu', dept:'Department of Disability Welfare', benefit:'₹10,000 – ₹1,50,000 support', tags:['Disability','Aid','Support'], target:'People with disabilities' },
+  senior: { icon:'👴', iconClass:'edu', tagClass:'tag-edu', dept:'Senior Citizens Welfare Department', benefit:'₹4,000 – ₹25,000 support', tags:['Seniors','Care','Pension'], target:'Older citizens and caregivers' },
+  finance: { icon:'💰', iconClass:'biz', tagClass:'tag-biz', dept:'Finance and Welfare Department', benefit:'₹3,000 – ₹90,000 assistance', tags:['Finance','Relief','Support'], target:'Low-income households' }
+};
+
+function buildExtraSchemes() {
+  const result = [];
+  let nextId = BASE_SCHEMES.length + 1;
+
+  Object.entries(EXTRA_SCHEME_NAMES).forEach(([category, names]) => {
+    const meta = CATEGORY_META[category] || CATEGORY_META.finance;
+    names.forEach((name, index) => {
+      const premium = PREMIUM_GENERATED_UPGRADES[result.length] || null;
+      const scheme = {
+        id: nextId++,
+        category,
+        icon: meta.icon,
+        iconClass: meta.iconClass,
+        name,
+        nameTamil: `${name} திட்டம்`,
+        dept: meta.dept,
+        desc: `Support programme for ${category} beneficiaries to receive financial aid, service assistance, and direct welfare support.`,
+        descTamil: `${category} பயனாளிகளுக்கு நிதி உதவி, சேவை உதவி மற்றும் நேரடி நலத்திட்ட ஆதரவு வழங்கும் திட்டம்.`,
+        benefit: meta.benefit,
+        tags: meta.tags,
+        tagClass: meta.tagClass,
+        eligibility: [
+          'Applicant must be a resident of India or the concerned state',
+          'Scheme-specific income or category criteria may apply',
+          'Applications must be submitted through official portal or office',
+          'Supporting identity and residency documents are required'
+        ],
+        documents: ['Aadhaar Card','Residence proof','Bank account details','Income certificate (if applicable)','Recent photograph'],
+        steps: [
+          'Visit the official government portal or local welfare office',
+          'Check the latest eligibility and application deadline',
+          'Register with identity details and create application',
+          'Upload required documents and verify information',
+          'Submit the application and track approval status online'
+        ],
+        url: 'https://www.india.gov.in/',
+        officialSource: 'india.gov.in',
+        verified: '2024-06-01',
+        level: index % 2 === 0 ? 'State' : 'Central',
+        target: meta.target,
+        match: 70 + ((index * 2) % 25)
+      };
+
+      if (premium) {
+        scheme.benefit = premium.benefit || scheme.benefit;
+        scheme.target = premium.target || scheme.target;
+        scheme.tags = premium.tags || scheme.tags;
+        scheme.desc = premium.desc || scheme.desc;
+        scheme.descTamil = premium.descTamil || scheme.descTamil;
+        scheme.eligibility = premium.eligibility || scheme.eligibility;
+        scheme.documents = premium.documents || scheme.documents;
+        scheme.steps = premium.steps || scheme.steps;
+        scheme.match = premium.match || scheme.match;
+        scheme.nameTamil = premium.nameTamil || scheme.nameTamil;
+        scheme.dept = premium.dept || scheme.dept;
+        scheme.officialSource = premium.officialSource || scheme.officialSource;
+        scheme.url = premium.url || scheme.url;
+      }
+
+      result.push(scheme);
+    });
+  });
+
+  return result;
+}
+
+const SCHEMES = [...BASE_SCHEMES, ...buildExtraSchemes()];
+console.log('Loaded scheme count:', SCHEMES.length);
+
+const DEMO_CONVERSATIONS = {
+  student: {
+    user:'நான் ஒரு கல்லூரி மாணவன், எனக்கு ஏதாவது உதவித்தொகை கிடைக்குமா?',
+    ai:`கண்டிப்பாக தேடலாம் 👍 கல்லூரி மாணவர்களுக்கு பல்வேறு உதவித்தொகை திட்டங்கள் உள்ளன.
+
+சில முக்கியமான கேள்விகள்:
+• நீங்கள் SC/ST/OBC வகையைச் சேர்ந்தவரா?
+• உங்கள் குடும்பத்தின் ஆண்டு வருமானம் எவ்வளவு?
+• நீங்கள் எந்த படிப்பை படிக்கிறீர்கள்?
+
+இந்த தகவல்களை சொன்னால் இன்னும் பொருத்தமான திட்டங்களை கண்டுபிடிக்க முடியும்.`,
+    schemes:[1]
+  },
+  farmer: {
+    user:'நான் ஒரு விவசாயி. என்ன உதவி கிடைக்கும்?',
+    ai:`கண்டிப்பாக 👍 விவசாயிகளுக்கு மத்திய மற்றும் மாநில அரசு பல திட்டங்களை வழங்குகின்றன.
+
+உங்களுக்கு பொருத்தமான திட்டங்களை கண்டுபிடிக்க:
+• உங்கள் மாவட்டம் எது?
+• நிலத்தின் அளவு எவ்வளவு? (ஏக்கர்)
+• சொந்த நிலமா அல்லது குத்தகை நிலமா?
+
+தற்போது உங்களுக்கு பொருத்தமான சில திட்டங்கள்:`,
+    schemes:[2,8]
+  },
+  women: {
+    user:'பெண்களுக்கான அரசு திட்டங்கள் என்னென்ன?',
+    ai:`பெண்களுக்காக அரசு பல சிறந்த திட்டங்களை வழங்குகிறது 👩
+
+தமிழ்நாட்டில் பெண்களுக்கான முக்கிய திட்டங்கள்:`,
+    schemes:[3,7]
+  },
+  employment: {
+    user:'வேலை தேடுகிறேன், எனக்கு என்ன திட்டங்கள் உதவும்?',
+    ai:`வேலைவாய்ப்பு மற்றும் தொழில் தொடங்க பல திட்டங்கள் உள்ளன 💼
+
+உங்கள் நோக்கம் என்ன?
+• சொந்த தொழில் தொடங்க வேண்டுமா?
+• அரசு வேலை தேடுகிறீர்களா?
+• திறன் மேம்பாட்டு பயிற்சி வேண்டுமா?
+
+தற்போது பரிந்துரைக்கப்படும் திட்டங்கள்:`,
+    schemes:[4]
+  },
+  health: {
+    user:'சுகாதார திட்டங்கள் பற்றி சொல்லுங்கள்',
+    ai:`சுகாதாரத்திற்காக மத்திய மற்றும் மாநில அரசு சில முக்கியமான திட்டங்களை வழங்குகின்றன 🏥
+
+மிக முக்கியமான திட்டம்:`,
+    schemes:[5]
+  },
+  housing: {
+    user:'வீடு கட்ட அரசு உதவி உண்டா?',
+    ai:`ஆம்! கிராமப்புற மற்றும் நகர்ப்புற குடும்பங்களுக்கு வீட்டு உதவி திட்டங்கள் உள்ளன 🏠
+
+உங்கள் நிலைமை என்ன?
+• கிராமப்புறமா / நகர்ப்புறமா?
+• BPL பட்டியலில் இருக்கிறீர்களா?
+
+இதோ முக்கியமான திட்டம்:`,
+    schemes:[9]
+  },
+  business: {
+    user:'சொந்த தொழில் தொடங்க கடன் கிடைக்குமா?',
+    ai:`தொழில் தொடங்க பல திட்டங்கள் உள்ளன! 🚀
+
+உங்கள் வகை என்ன? (SC/ST/OBC/General)
+தொழிலின் மதிப்பீடு என்ன?
+
+இதோ பொருத்தமான திட்டங்கள்:`,
+    schemes:[4,6]
+  },
+  disability: {
+    user:'மாற்றுத்திறனாளிகளுக்கு என்ன திட்டங்கள் உள்ளன?',
+    ai:`மாற்றுத்திறனாளிகளுக்கு மத்திய மற்றும் மாநில அரசு பல திட்டங்களை வழங்குகின்றன ♿
+
+• ADIP திட்டம் — உதவி சாதனங்கள் (மத்திய அரசு)
+• மாற்றுத்திறனாளிகள் உதவித்தொகை (மாநில அரசு)
+• NHFDC கடன் திட்டங்கள்
+
+உங்கள் மாற்றுத்திறன் வகை மற்றும் மாவட்டத்தை சொன்னால் மேலும் துல்லியமாக பரிந்துரைக்க முடியும்.`,
+    schemes:[]
+  }
+};
+
+// ===== STATE =====
+let currentLang = 'ta';
+let currentPage = 'home';
+let wizardStep = 0;
+let wizardData = {};
+let chatHistory = [];
+let isLoading = false;
+const API_URL = 'https://api.anthropic.com/v1/messages';
+let currentTheme = 'emerald';
+
+function setTheme(theme) {
+  const validThemes = ['emerald', 'ocean', 'sunset', 'midnight'];
+  currentTheme = validThemes.includes(theme) ? theme : 'emerald';
+  document.body.setAttribute('data-theme', currentTheme);
+  document.querySelectorAll('.theme-dot').forEach(button => {
+    button.classList.toggle('active', button.dataset.theme === currentTheme);
+  });
+}
+
+function bindThemeControls() {
+  document.querySelectorAll('.theme-dot').forEach(button => {
+    button.addEventListener('click', () => setTheme(button.dataset.theme));
+  });
+}
+
+// ===== INIT =====
+const savedSchemes = new Set();
+
+function getActiveFilter() {
+  const active = document.querySelector('.filter-btn.active');
+  return active ? active.textContent.toLowerCase() : 'all';
+}
+
+function toggleSaved(id) {
+  if (savedSchemes.has(id)) {
+    savedSchemes.delete(id);
+  } else {
+    savedSchemes.add(id);
+  }
+  renderSavedSchemes();
+  renderFeaturedSchemes();
+  renderAllSchemes(getActiveFilter() === 'அனைத்தும்' || getActiveFilter() === 'all' ? 'all' : getActiveFilter());
+}
+
+function renderSavedSchemes() {
+  const savedList = document.getElementById('saved-list');
+  const comparePanel = document.getElementById('compare-panel');
+  if (!savedList) return;
+
+  if (savedSchemes.size === 0) {
+    savedList.innerHTML = '<span style="font-size:12px;color:var(--text-secondary)">No schemes saved yet. Tap the bookmark to save your favourites.</span>';
+    if (comparePanel) comparePanel.innerHTML = '';
+    return;
+  }
+
+  const items = [...savedSchemes].map(id => {
+    const s = SCHEMES.find(item => item.id === id);
+    if (!s) return '';
+    return `<button class="saved-pill" onclick="showDetail(${s.id})">${s.name}</button>`;
+  }).join('');
+
+  savedList.innerHTML = items;
+
+  if (comparePanel) {
+    const savedItems = [...savedSchemes].map(id => SCHEMES.find(item => item.id === id)).filter(Boolean).slice(0, 3);
+    if (savedItems.length < 2) {
+      comparePanel.innerHTML = '<div class="compare-card"><h4>Comparison</h4><p>Save at least 2 schemes to compare benefits, target groups, and support type side by side.</p></div>';
+      return;
+    }
+
+    comparePanel.innerHTML = savedItems.map((s, index) => `
+      <div class="compare-card">
+        <h4>${index + 1}. ${s.name}</h4>
+        <p><strong>Category:</strong> ${s.category}</p>
+        <p><strong>Benefit:</strong> ${s.benefit}</p>
+        <p><strong>Target:</strong> ${s.target}</p>
+        <p><strong>Level:</strong> ${s.level}</p>
+      </div>
+    `).join('');
+  }
+}
+
+function downloadSavedShortlist() {
+  if (savedSchemes.size === 0) return;
+  const savedItems = [...savedSchemes].map(id => SCHEMES.find(item => item.id === id)).filter(Boolean);
+  const content = savedItems.map((s, index) => `${index + 1}. ${s.name}\nCategory: ${s.category}\nBenefit: ${s.benefit}\nTarget: ${s.target}\nOfficial source: ${s.officialSource}\n\n`).join('');
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'saved-shortlist.txt';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+function init() {
+  setTheme(currentTheme);
+  bindThemeControls();
+  renderFeaturedSchemes();
+  renderCuratedTop50();
+  renderTopMatches();
+  renderNeedRadar();
+  addQuickInsights();
+  renderSavedSchemes();
+  renderAllSchemes();
+}
+
+document.addEventListener('click', function(event) {
+  const chip = event.target.closest('.radar-chip');
+  if (chip) {
+    renderNeedRadar(chip.dataset.radar);
+  }
+});
+
+function showDetail(id) {
+  const s = SCHEMES.find(x => x.id === id);
+  if (!s) return;
+  const c = document.getElementById('detail-content');
+  c.innerHTML = `
+    <button class="back-btn" onclick="history.back() || showPage('schemes')">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i> திரும்பு
+    </button>
+    <div class="detail-header">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div class="scheme-icon ${s.iconClass}" style="width:48px;height:48px;font-size:24px" aria-hidden="true">${s.icon}</div>
+        <div>
+          <div class="detail-title">${s.name}</div>
+          <div class="detail-title-tamil">${s.nameTamil}</div>
+        </div>
+      </div>
+      <div class="detail-meta">
+        <div class="detail-meta-item"><i class="ti ti-building-bank" aria-hidden="true"></i> ${s.dept}</div>
+        <div class="detail-meta-item"><i class="ti ti-map-pin" aria-hidden="true"></i> ${s.level} Scheme</div>
+        <div class="detail-meta-item"><i class="ti ti-users" aria-hidden="true"></i> ${s.target}</div>
+        <div class="detail-meta-item" style="color:#1D9E75"><i class="ti ti-circle-check" aria-hidden="true"></i> Verified ${s.verified}</div>
+      </div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">📊</div>
+        Eligibility score
+      </div>
+      <div class="score-meter"><div class="score-meter-fill" style="width:${s.match}%"></div></div>
+      <div class="score-meter-text">Estimated fit: ${s.match}%</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">💰</div>
+        நன்மைகள் · Benefits
+      </div>
+      <div style="font-size:18px;font-weight:500;color:#1D9E75">${s.benefit}</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">✅</div>
+        தகுதி நிபந்தனைகள் · Eligibility
+      </div>
+      <ul class="detail-list">${s.eligibility.map(e=>`<li>${e}</li>`).join('')}</ul>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">📄</div>
+        தேவையான ஆவணங்கள் · Required Documents
+      </div>
+      <ul class="detail-list">${s.documents.map(d=>`<li>${d}</li>`).join('')}</ul>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">📝</div>
+        எப்படி விண்ணப்பிப்பது? · How to Apply
+      </div>
+      <ol class="detail-steps">${s.steps.map((step,i)=>`<li class="detail-step"><div class="step-num">${i+1}</div><div class="step-text">${step}</div></li>`).join('')}</ol>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">🏛</div>
+        அதிகாரப்பூர்வ ஆதாரம் · Official Source
+      </div>
+      <a href="${s.url}" target="_blank" style="color:var(--text-accent);font-size:14px;display:flex;align-items:center;gap:6px">
+        <i class="ti ti-external-link" aria-hidden="true"></i> ${s.officialSource}
+      </a>
+    </div>
+    <button class="apply-cta" onclick="window.open('${s.url}','_blank')">
+      <i class="ti ti-external-link" style="margin-right:6px" aria-hidden="true"></i>
+      இப்போதே விண்ணப்பிக்கவும் · Apply Now
+    </button>
+    <div class="disclaimer" role="note">
+      ⚠️ இந்த தகவல் வழிகாட்டுதலுக்காக மட்டுமே. இறுதி தகுதி மற்றும் விண்ணப்ப முடிவு சம்பந்தப்பட்ட அரசு துறையால் தீர்மானிக்கப்படும்.
+      <br>This information is for guidance only. Final eligibility and application decisions are determined by the concerned government authority.
+    </div>
+  `;
+  showPage('detail');
+}
+
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  const navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+  currentPage = page;
+  if (page === 'checker') initWizard();
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('lang-' + lang).classList.add('active');
+  const isTamil = lang === 'ta';
+  document.getElementById('hero-title').textContent = isTamil
+    ? 'உங்களுக்கு கிடைக்கக்கூடிய அரசு திட்டங்களை கண்டுபிடியுங்கள்'
+    : 'Discover government schemes you are eligible for';
+  document.getElementById('hero-en').textContent = isTamil
+    ? 'Government schemes made simple, in your language.'
+    : 'ஆயிரக்கணக்கான திட்டங்கள். உங்கள் மொழியில்.';
+  document.getElementById('hero-sub').textContent = isTamil
+    ? 'உங்கள் தேவையை தமிழில் சொல்லுங்கள். உங்களுக்கு பொருத்தமான அரசு நலத்திட்டங்களை எளிமையாக தெரிந்துகொள்ளுங்கள்.'
+    : 'Tell us your need. Discover relevant Tamil Nadu and Central government welfare schemes easily.';
+}
+
+// ===== SCHEMES RENDER =====
+function renderSchemeCard(s, container) {
+  const div = document.createElement('div');
+  div.className = 'scheme-card';
+  const isSaved = savedSchemes.has(s.id);
+  div.innerHTML = `
+    <div class="verified-badge" aria-label="Verified source">
+      <i class="ti ti-circle-check" aria-hidden="true"></i> Verified
+    </div>
+    <div class="scheme-header">
+      <div class="scheme-icon ${s.iconClass}" aria-hidden="true">${s.icon}</div>
+      <div>
+        <div class="scheme-name">${s.name}</div>
+        <div class="scheme-name-tamil">${s.nameTamil}</div>
+      </div>
+    </div>
+    <div class="scheme-dept">${s.dept}</div>
+    <div class="scheme-desc">${s.desc}</div>
+    <div class="scheme-tags">${s.tags.map(t=>`<span class="scheme-tag ${s.tagClass}">${t}</span>`).join('')}</div>
+    <div class="scheme-footer">
+      <div class="scheme-benefit">${s.benefit}</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button class="scheme-save-btn ${isSaved ? 'saved' : ''}" onclick="event.stopPropagation(); toggleSaved(${s.id});" aria-label="Save scheme">${isSaved ? '★' : '☆'}</button>
+        <button class="scheme-btn" onclick="showDetail(${s.id})">விவரங்கள் →</button>
+      </div>
+    </div>
+    <div class="score-meter" aria-label="Eligibility score">
+      <div class="score-meter-fill" style="width:${s.match}%"></div>
+    </div>
+    <div class="score-meter-text">Eligibility score: ${s.match}%</div>
+  `;
+  container.appendChild(div);
+}
+
+function renderFeaturedSchemes() {
+  const c = document.getElementById('featured-schemes');
+  c.innerHTML = '';
+  SCHEMES.slice(0,6).forEach(s => renderSchemeCard(s, c));
+}
+
+function renderCuratedTop50() {
+  const panel = document.getElementById('curated-grid');
+  if (!panel) return;
+  const top = [...SCHEMES].sort((a, b) => b.match - a.match).slice(0, 50);
+  panel.innerHTML = top.map((s, index) => `
+    <div class="curated-tile">
+      <div class="curated-rank">#${index + 1}</div>
+      <div class="curated-name">${s.name}</div>
+      <div class="curated-meta">${s.benefit}<br>${s.target}</div>
+      <div class="score-meter"><div class="score-meter-fill" style="width:${s.match}%"></div></div>
+      <div class="score-meter-text">Match ${s.match}%</div>
+    </div>
+  `).join('');
+}
+
+function renderTopMatches() {
+  const panel = document.getElementById('top-matches-grid');
+  if (!panel) return;
+  const top = [...SCHEMES].sort((a, b) => b.match - a.match).slice(0, 3);
+  panel.innerHTML = top.map((s, index) => `
+    <div class="match-card">
+      <div class="match-badge">#${index + 1} Match</div>
+      <h4>${s.name}</h4>
+      <p>${s.desc}</p>
+      <p><strong>Target:</strong> ${s.target}</p>
+      <p><strong>Benefit:</strong> ${s.benefit}</p>
+      <div class="score-meter"><div class="score-meter-fill" style="width:${s.match}%"></div></div>
+      <div class="score-meter-text">Eligibility fit: ${s.match}%</div>
+    </div>
+  `).join('');
+}
+
+function renderNeedRadar(mode = 'student') {
+  const summary = document.getElementById('radar-summary');
+  if (!summary) return;
+
+  const map = {
+    student: SCHEMES.filter(s => s.category === 'education').sort((a, b) => b.match - a.match).slice(0, 3),
+    farmer: SCHEMES.filter(s => s.category === 'agriculture').sort((a, b) => b.match - a.match).slice(0, 3),
+    women: SCHEMES.filter(s => s.category === 'women').sort((a, b) => b.match - a.match).slice(0, 3),
+    health: SCHEMES.filter(s => s.category === 'health').sort((a, b) => b.match - a.match).slice(0, 3),
+    business: SCHEMES.filter(s => s.category === 'business' || s.category === 'employment').sort((a, b) => b.match - a.match).slice(0, 3)
+  };
+
+  const items = map[mode] || map.student;
+  const best = items[0] || SCHEMES[0];
+
+  document.querySelectorAll('.radar-chip').forEach(button => {
+    button.classList.toggle('active', button.dataset.radar === mode);
+  });
+
+  summary.innerHTML = `
+    <div class="radar-highlight">
+      <div class="match-badge">Best fit</div>
+      <h4>${best.name}</h4>
+      <p>${best.desc}</p>
+      <div class="score-meter"><div class="score-meter-fill" style="width:${best.match}%"></div></div>
+      <div class="score-meter-text">Estimated fit: ${best.match}%</div>
+    </div>
+    <div class="radar-list">
+      ${items.map(s => `
+        <div class="radar-item">
+          <div>
+            <strong>${s.name}</strong><br>
+            <span>${s.benefit}</span>
+          </div>
+          <span>${s.match}%</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderAllSchemes(filter='all') {
+  const c = document.getElementById('all-schemes');
+  c.innerHTML = '';
+  const list = filter === 'all' ? SCHEMES : SCHEMES.filter(s => s.category === filter);
+  list.forEach(s => renderSchemeCard(s, c));
+  renderSavedSchemes();
+}
+
+function filterSchemes(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  btn && btn.setAttribute('data-cat', cat);
+  renderAllSchemes(cat);
+}
+
+function filterCategory(cat) {
+  showPage('schemes');
+  setTimeout(() => {
+    const btns = document.querySelectorAll('.filter-btn');
+    btns.forEach(b => { if(b.textContent.toLowerCase().includes(cat.slice(0,4))) b.classList.add('active'); else b.classList.remove('active'); });
+    renderAllSchemes(cat);
+  }, 50);
+}
+
+function searchSchemes() {
+  const q = document.getElementById('scheme-search').value.toLowerCase();
+  const c = document.getElementById('all-schemes');
+  c.innerHTML = '';
+  const list = SCHEMES.filter(s =>
+    s.name.toLowerCase().includes(q) || s.nameTamil.includes(q) ||
+    s.desc.toLowerCase().includes(q) || s.tags.some(t => t.toLowerCase().includes(q))
+  );
+  if (list.length === 0) {
+    c.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-secondary)">
+      <div style="font-size:32px;margin-bottom:8px">🔍</div>
+      <div>திட்டங்கள் எதுவும் கிடைக்கவில்லை. மேலும் தேட AI நண்பனிடம் கேளுங்கள்.</div>
+      <button class="scheme-btn" style="margin-top:12px;padding:8px 16px" onclick="showPage('chat')">AI நண்பனிடம் கேளுங்கள் →</button>
+    </div>`;
+    return;
+  }
+  list.forEach(s => renderSchemeCard(s, c));
+}
+
+// ===== SCHEME DETAIL =====
+function showDetail(id) {
+  const s = SCHEMES.find(x => x.id === id);
+  if (!s) return;
+  const c = document.getElementById('detail-content');
+  c.innerHTML = `
+    <button class="back-btn" onclick="history.back() || showPage('schemes')">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i> திரும்பு
+    </button>
+    <div class="detail-header">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div class="scheme-icon ${s.iconClass}" style="width:48px;height:48px;font-size:24px" aria-hidden="true">${s.icon}</div>
+        <div>
+          <div class="detail-title">${s.name}</div>
+          <div class="detail-title-tamil">${s.nameTamil}</div>
+        </div>
+      </div>
+      <div class="detail-meta">
+        <div class="detail-meta-item"><i class="ti ti-building-bank" aria-hidden="true"></i> ${s.dept}</div>
+        <div class="detail-meta-item"><i class="ti ti-map-pin" aria-hidden="true"></i> ${s.level} Scheme</div>
+        <div class="detail-meta-item"><i class="ti ti-users" aria-hidden="true"></i> ${s.target}</div>
+        <div class="detail-meta-item" style="color:#1D9E75"><i class="ti ti-circle-check" aria-hidden="true"></i> Verified ${s.verified}</div>
+      </div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">💰</div>
+        நன்மைகள் · Benefits
+      </div>
+      <div style="font-size:18px;font-weight:500;color:#1D9E75">${s.benefit}</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">✅</div>
+        தகுதி நிபந்தனைகள் · Eligibility
+      </div>
+      <ul class="detail-list">${s.eligibility.map(e=>`<li>${e}</li>`).join('')}</ul>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">📄</div>
+        தேவையான ஆவணங்கள் · Required Documents
+      </div>
+      <ul class="detail-list">${s.documents.map(d=>`<li>${d}</li>`).join('')}</ul>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">📝</div>
+        எப்படி விண்ணப்பிப்பது? · How to Apply
+      </div>
+      <ol class="detail-steps">${s.steps.map((step,i)=>`<li class="detail-step"><div class="step-num">${i+1}</div><div class="step-text">${step}</div></li>`).join('')}</ol>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="detail-section-icon" aria-hidden="true">🏛</div>
+        அதிகாரப்பூர்வ ஆதாரம் · Official Source
+      </div>
+      <a href="${s.url}" target="_blank" style="color:var(--text-accent);font-size:14px;display:flex;align-items:center;gap:6px">
+        <i class="ti ti-external-link" aria-hidden="true"></i> ${s.officialSource}
+      </a>
+    </div>
+    <button class="apply-cta" onclick="window.open('${s.url}','_blank')">
+      <i class="ti ti-external-link" style="margin-right:6px" aria-hidden="true"></i>
+      இப்போதே விண்ணப்பிக்கவும் · Apply Now
+    </button>
+    <div class="disclaimer" role="note">
+      ⚠️ இந்த தகவல் வழிகாட்டுதலுக்காக மட்டுமே. இறுதி தகுதி மற்றும் விண்ணப்ப முடிவு சம்பந்தப்பட்ட அரசு துறையால் தீர்மானிக்கப்படும்.
+      <br>This information is for guidance only. Final eligibility and application decisions are determined by the concerned government authority.
+    </div>
+  `;
+  showPage('detail');
+}
+
+// ===== CHAT =====
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg || isLoading) return;
+  input.value = '';
+  appendMsg('user', msg);
+  document.getElementById('suggested-qs').style.display = 'none';
+  await callAI(msg);
+}
+
+function sendSuggested(msg) {
+  document.getElementById('chat-input').value = msg;
+  sendChat();
+}
+
+function heroSearch() {
+  const input = document.getElementById('hero-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  document.getElementById('chat-input').value = msg;
+  showPage('chat');
+  setTimeout(() => sendChat(), 100);
+}
+
+function heroQuickSearch(msg) {
+  document.getElementById('hero-input').value = msg;
+  heroSearch();
+}
+
+function loadSuggestedChat(type) {
+  const conv = DEMO_CONVERSATIONS[type];
+  if (!conv) return;
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  event.target.classList.add('active');
+  const msgs = document.getElementById('chat-messages');
+  const firstMsg = msgs.children[0];
+  msgs.innerHTML = '';
+  msgs.appendChild(firstMsg);
+  document.getElementById('chat-input').value = conv.user;
+  sendChat();
+}
+
+function appendMsg(role, content, isHTML=false) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const avatar = role === 'user'
+    ? '<i class="ti ti-user" aria-hidden="true"></i>'
+    : '<i class="ti ti-shield-heart" aria-hidden="true"></i>';
+  div.innerHTML = `
+    <div class="msg-avatar">${avatar}</div>
+    <div class="msg-bubble">${isHTML ? content : escHtml(content).replace(/\n/g,'<br>')}</div>
+  `;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function escHtml(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function showTyping() {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg assistant';
+  div.id = 'typing-indicator';
+  div.innerHTML = `
+    <div class="msg-avatar"><i class="ti ti-shield-heart" aria-hidden="true"></i></div>
+    <div class="msg-bubble">
+      <div class="typing-indicator" aria-label="AI is thinking">
+        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      </div>
+    </div>
+  `;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing-indicator');
+  if (t) t.remove();
+}
+
+async function callAI(userMsg) {
+  isLoading = true;
+  const sendBtn = document.getElementById('chat-send');
+  sendBtn.disabled = true;
+  showTyping();
+
+  const systemPrompt = `You are நலத்திட்ட நண்பன் (Nallathita Nanban), an AI assistant for a Tamil Government Welfare Scheme Discovery Platform.
+
+Your role: Help Tamil-speaking citizens discover government welfare schemes they are eligible for.
+
+IMPORTANT RULES:
+1. Always respond in Tamil (or the same language the user uses — Tamil, Tanglish, or English)
+2. NEVER fabricate government scheme names, benefits, URLs, or eligibility criteria
+3. If asked about a real scheme, provide accurate general information and direct to official sources
+4. If you're unsure, say so clearly
+5. Always add a disclaimer that this is guidance only, not official government determination
+6. Be warm, helpful, and conversational — like a knowledgeable friend
+
+Response format for scheme recommendations:
+🎯 உங்களுக்கு பொருத்தமான திட்டம்
+
+**[Scheme Name]**
+[Tamil Name if applicable]
+
+💰 **நன்மைகள்:** [Benefits]
+✅ **தகுதி:** [Key eligibility]
+📄 **முக்கிய ஆவணங்கள்:** [Key documents]
+📝 **விண்ணப்பிக்க:** [Where/how to apply briefly]
+🏛 **அதிகாரப்பூர்வ இணையதளம்:** [Official URL]
+
+⚠️ *இது வழிகாட்டுதல் மட்டுமே. இறுதி தகுதி அரசு துறையால் தீர்மானிக்கப்படும்.*
+
+For greetings or follow-up questions, respond conversationally in Tamil/Tanglish/English matching the user's language.
+Ask clarifying questions to give better recommendations (age, occupation, income, caste category if relevant, location).`;
+
+  chatHistory.push({ role:'user', content: userMsg });
+
+  try {
+    const resp = await fetch(API_URL, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system: systemPrompt,
+        messages: chatHistory
+      })
+    });
+    const data = await resp.json();
+    removeTyping();
+
+    if (data.error) {
+      appendMsg('assistant', '⚠️ மன்னிக்கவும், தற்போது AI பதில் கொடுக்க முடியவில்லை. சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கவும்.\n\nதிட்டங்களை நேரடியாக "திட்டங்கள்" பகுதியில் தேடலாம்.');
+      chatHistory.pop();
+    } else {
+      const aiText = data.content.map(b => b.text || '').join('');
+      chatHistory.push({ role:'assistant', content: aiText });
+      // Render with markdown-like formatting
+      const formatted = formatAIResponse(aiText);
+      appendMsg('assistant', formatted, true);
+    }
+  } catch(e) {
+    removeTyping();
+    appendMsg('assistant', '⚠️ இணைய இணைப்பில் சிக்கல். திட்டங்களை நேரடியாக தேட "திட்டங்கள்" பகுதிக்கு செல்லுங்கள்.');
+    chatHistory.pop();
+  }
+  isLoading = false;
+  sendBtn.disabled = false;
+  document.getElementById('chat-messages').scrollTop = 9999;
+}
+
+function formatAIResponse(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>')
+    .replace(/🎯|💰|✅|📄|📝|🏛|⚠️|👍|🌾|🎓|👩|💼|🏠|🚀|♿|👴/g, '<span aria-hidden="true">$&</span>');
+}
+
+function addQuickInsights() {
+  const card = document.createElement('div');
+  card.className = 'scheme-card';
+  card.innerHTML = `
+    <div class="verified-badge"><i class="ti ti-circle-check"></i> Smart Match</div>
+    <div class="scheme-header">
+      <div class="scheme-icon edu">✨</div>
+      <div>
+        <div class="scheme-name">Quick Suggestions</div>
+        <div class="scheme-name-tamil">விரைவான பரிந்துரைகள்</div>
+      </div>
+    </div>
+    <div class="scheme-desc">Try "student", "farmer", "women", "job seeker", or "housing" to get the most relevant schemes instantly.</div>
+    <div class="scheme-tags">
+      <span class="scheme-tag tag-edu">Education</span>
+      <span class="scheme-tag tag-agri">Agriculture</span>
+      <span class="scheme-tag tag-women">Women</span>
+      <span class="scheme-tag tag-emp">Jobs</span>
+    </div>
+  `;
+  const target = document.getElementById('featured-schemes');
+  if (target && target.children.length) {
+    target.insertBefore(card, target.firstChild);
+  }
+}
+
+// Handle Enter key in chat
+document.addEventListener('keydown', function(e) {
+  const chatInput = document.getElementById('chat-input');
+  if (e.target === chatInput && e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendChat();
+  }
+  const heroInput = document.getElementById('hero-input');
+  if (e.target === heroInput && e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    heroSearch();
+  }
+});
+
+// ===== ELIGIBILITY WIZARD =====
+const WIZARD_STEPS = [
+  {
+    type:'choice',
+    label:'படி 1/5',
+    title:'உங்களை விவரிக்கும் விருப்பத்தை தேர்ந்தெடுங்கள்',
+    titleEn:'What best describes you?',
+    sub:'உங்கள் தகுதிக்கேற்ற திட்டங்களை கண்டுபிடிக்க உதவுகிறது',
+    key:'role',
+    options:[
+      {icon:'🎓',label:'மாணவர்',subLabel:'Student',value:'student'},
+      {icon:'🌾',label:'விவசாயி',subLabel:'Farmer',value:'farmer'},
+      {icon:'💼',label:'வேலையாளர்',subLabel:'Employee',value:'employee'},
+      {icon:'🔍',label:'வேலை தேடுபவர்',subLabel:'Job seeker',value:'jobseeker'},
+      {icon:'🚀',label:'தொழில்முனைவோர்',subLabel:'Entrepreneur',value:'entrepreneur'},
+      {icon:'👴',label:'மூத்த குடிமகன்',subLabel:'Senior citizen',value:'senior'},
+      {icon:'👩',label:'பெண்',subLabel:'Woman',value:'woman'},
+      {icon:'🏠',label:'பொது குடிமகன்',subLabel:'General citizen',value:'general'},
+    ]
+  },
+  {
+    type:'input',
+    label:'படி 2/5',
+    title:'உங்கள் வயது என்ன?',
+    titleEn:'How old are you?',
+    sub:'வயதின் படி திட்டங்கள் மாறுபடும்',
+    key:'age',
+    placeholder:'உதாரணம்: 25',
+    inputType:'number'
+  },
+  {
+    type:'input',
+    label:'படி 3/5',
+    title:'குடும்பத்தின் ஆண்டு வருமானம்?',
+    titleEn:'Annual family income?',
+    sub:'தகுதி மதிப்பீட்டிற்கு மட்டும் பயன்படுத்தப்படும்',
+    key:'income',
+    placeholder:'உதாரணம்: 120000',
+    inputType:'number'
+  },
+  {
+    type:'choice',
+    label:'படி 4/5',
+    title:'உங்கள் சாதி வகுப்பு என்ன?',
+    titleEn:'Social category',
+    sub:'சில திட்டங்களுக்கு வகுப்பு அடிப்படையில் தகுதி உள்ளது',
+    key:'category',
+    options:[
+      {icon:'📋',label:'SC',subLabel:'Scheduled Caste',value:'sc'},
+      {icon:'📋',label:'ST',subLabel:'Scheduled Tribe',value:'st'},
+      {icon:'📋',label:'OBC',subLabel:'Other Backward Class',value:'obc'},
+      {icon:'📋',label:'General',subLabel:'General Category',value:'general'},
+    ]
+  },
+  {
+    type:'choice',
+    label:'படி 5/8',
+    title:'உங்கள் மாநிலம் எது?',
+    titleEn:'Your state',
+    sub:'மாநில அடிப்படையில் திட்டங்கள் வேறுபடும்',
+    key:'state',
+    options:[
+      {icon:'🌊',label:'தமிழ்நாடு',subLabel:'Tamil Nadu',value:'tn'},
+      {icon:'🌿',label:'கேரளா',subLabel:'Kerala',value:'kl'},
+      {icon:'🏔',label:'கர்நாடகா',subLabel:'Karnataka',value:'ka'},
+      {icon:'🌅',label:'ஆந்திரா',subLabel:'Andhra Pradesh',value:'ap'},
+    ]
+  },
+  {
+    type:'choice',
+    label:'படி 6/8',
+    title:'நீங்கள் எந்த பகுதியைச் சேர்ந்தவர்?',
+    titleEn:'Where do you live?',
+    sub:'கிராமம் அல்லது நகர்ப்புறம் அடிப்படையில் உதவி மாறுபடும்',
+    key:'area',
+    options:[
+      {icon:'🌾',label:'கிராமம்',subLabel:'Rural',value:'rural'},
+      {icon:'🏙',label:'நகரம்',subLabel:'Urban',value:'urban'},
+      {icon:'🌄',label:'மலை/தொடர்பு குறைந்த பகுதி',subLabel:'Hill / Remote',value:'remote'},
+      {icon:'🛖',label:'பழங்குடி/வறண்ட பகுதி',subLabel:'Tribal / Semi-urban',value:'tribal'}
+    ]
+  },
+  {
+    type:'choice',
+    label:'படி 7/8',
+    title:'உங்கள் குடும்ப சூழ்நிலை என்ன?',
+    titleEn:'Family situation',
+    sub:'சில திட்டங்களுக்கு குடும்ப நிலை முக்கியம்',
+    key:'familyType',
+    options:[
+      {icon:'👨‍👩‍👧',label:'பொது குடும்பம்',subLabel:'General family',value:'general-family'},
+      {icon:'🧑‍🦱',label:'ஒற்றை பெற்றோர்',subLabel:'Single parent',value:'single-parent'},
+      {icon:'👵',label:'வைப்பாளர் / விதவை',subLabel:'Widow / dependent',value:'widow'},
+      {icon:'🧒',label:'குழந்தைகள் உள்ள குடும்பம்',subLabel:'Has children',value:'with-children'}
+    ]
+  },
+  {
+    type:'choice',
+    label:'படி 8/8',
+    title:'எந்த வகையான உதவி உங்களுக்கு மிகவும் தேவை?',
+    titleEn:'What kind of support do you need most?',
+    sub:'உங்கள் முக்கிய தேவையை தேர்ந்தெடுங்கள்',
+    key:'need',
+    options:[
+      {icon:'🎓',label:'கல்வி உதவி',subLabel:'Education',value:'education'},
+      {icon:'💰',label:'நிதி உதவி',subLabel:'Financial aid',value:'finance'},
+      {icon:'🌾',label:'விவசாய உதவி',subLabel:'Agriculture',value:'agriculture'},
+      {icon:'💼',label:'வேலை/தொழில்',subLabel:'Jobs / business',value:'employment'},
+      {icon:'🏥',label:'சுகாதார உதவி',subLabel:'Healthcare',value:'health'},
+      {icon:'🏠',label:'வீடு/சேவை',subLabel:'Housing / shelter',value:'housing'}
+    ]
+  }
+];
+
+function initWizard() {
+  wizardStep = 0;
+  wizardData = {};
+  document.getElementById('wizard-container').style.display = 'block';
+  document.getElementById('results-container').style.display = 'none';
+  renderWizardStep();
+}
+
+function renderWizardStep() {
+  const step = WIZARD_STEPS[wizardStep];
+  const pct = Math.round((wizardStep / WIZARD_STEPS.length) * 100);
+  const wizard = document.getElementById('wizard-container');
+  const labelMap = {
+    role: wizardData.role || 'Profile not set',
+    age: wizardData.age ? `${wizardData.age} yrs` : 'Pending',
+    income: wizardData.income ? `₹${Number(wizardData.income).toLocaleString('en-IN')}` : 'Pending',
+    category: wizardData.category || 'Pending',
+    state: wizardData.state || 'Pending',
+    area: wizardData.area || 'Pending',
+    familyType: wizardData.familyType || 'Pending',
+    need: wizardData.need || 'Pending'
+  };
+
+  wizard.innerHTML = `
+    <div class="checker-shell">
+      <div class="checker-hero">
+        <div>
+          <div class="checker-badge">✨ தகுதி சார் · Eligibility Guide</div>
+        </div>
+        <div class="checker-score-pill">
+          <strong>${pct}%</strong>
+          <span>Complete</span>
+        </div>
+      </div>
+
+      <div class="wizard-panel-wrap">
+        <div class="wizard-card">
+          <div class="wizard-progress" aria-label="Progress: ${pct}%">
+            <div class="wizard-progress-bar" style="width:${pct}%"></div>
+          </div>
+          <div class="wizard-step-label">${step.label}</div>
+          <h2 class="wizard-title">${step.title}</h2>
+          <p class="wizard-sub">${step.sub}</p>
+          ${step.type === 'choice'
+            ? `<div class="wizard-options" role="group" aria-label="${step.title}">
+                ${step.options.map(o => `
+                  <div class="wizard-option" onclick="selectWizardOption('${o.value}', this)" role="radio" tabindex="0" aria-label="${o.label}">
+                    <span class="wizard-option-icon" aria-hidden="true">${o.icon}</span>
+                    <span class="wizard-option-label">${o.label}</span>
+                    <span class="wizard-option-sub">${o.subLabel}</span>
+                  </div>
+                `).join('')}
+              </div>`
+            : `<input class="wizard-input" type="${step.inputType}" id="wizard-text-input" placeholder="${step.placeholder}" aria-label="${step.title}">`
+          }
+          <button class="wizard-next" onclick="nextWizardStep()" disabled id="wizard-next-btn">
+            ${wizardStep === WIZARD_STEPS.length - 1 ? '🔍 திட்டங்களை கண்டுபிடி' : 'அடுத்தது →'}
+          </button>
+          ${wizardStep > 0 ? `<button onclick="prevWizardStep()" style="background:transparent;border:none;color:var(--text-secondary);font-size:13px;cursor:pointer;margin-top:12px;width:100%;text-align:center">← முந்தைய படி</button>` : ''}
+        </div>
+
+        <aside class="wizard-summary">
+          <div class="summary-title">Profile Snapshot</div>
+          <div class="summary-list">
+            ${Object.entries(labelMap).map(([key, value]) => `
+              <div class="summary-item">
+                <div class="summary-item-label">${key}</div>
+                <div class="summary-item-value">${value}</div>
+              </div>
+            `).join('')}
+          </div>
+        </aside>
+      </div>
+    </div>
+  `;
+
+  if (step.type === 'input') {
+    const inp = document.getElementById('wizard-text-input');
+    if (wizardData[step.key]) inp.value = wizardData[step.key];
+    inp.addEventListener('input', () => {
+      document.getElementById('wizard-next-btn').disabled = !inp.value.trim();
+    });
+    if (wizardData[step.key]) document.getElementById('wizard-next-btn').disabled = false;
+  }
+}
+
+function selectWizardOption(val, el) {
+  el.closest('.wizard-options').querySelectorAll('.wizard-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  wizardData[WIZARD_STEPS[wizardStep].key] = val;
+  document.getElementById('wizard-next-btn').disabled = false;
+}
+
+function nextWizardStep() {
+  const step = WIZARD_STEPS[wizardStep];
+  if (step.type === 'input') {
+    const val = document.getElementById('wizard-text-input').value.trim();
+    if (!val) return;
+    wizardData[step.key] = val;
+  }
+  if (wizardStep < WIZARD_STEPS.length - 1) {
+    wizardStep++;
+    renderWizardStep();
+  } else {
+    showResults();
+  }
+}
+
+function prevWizardStep() {
+  if (wizardStep > 0) { wizardStep--; renderWizardStep(); }
+}
+
+function showResults() {
+  document.getElementById('wizard-container').style.display = 'none';
+  const rc = document.getElementById('results-container');
+  rc.style.display = 'block';
+  const scored = SCHEMES.map(s => ({
+    ...s,
+    score: computeScore(s, wizardData)
+  })).filter(s => s.score > 40).sort((a,b) => b.score - a.score).slice(0,6);
+
+  rc.innerHTML = `
+    <div class="results">
+      <button class="back-btn" onclick="initWizard()"><i class="ti ti-arrow-left"></i> மீண்டும் தேட</button>
+
+      <div class="results-hero">
+        <div class="results-hero-grid">
+          <div>
+            <h2 class="results-title" style="margin-bottom:4px;">உங்களுக்கு பொருத்தமான திட்டங்கள்</h2>
+            <p class="results-sub">${scored.length} சிறந்த விருப்பங்கள் உங்கள் சுயவிவரத்துடன் பொருந்துகின்றன.</p>
+          </div>
+          <div class="results-kpi">
+            <div>
+              <strong>${scored[0]?.score || 0}%</strong>
+              <span>Best Match</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      ${scored.map((s,i) => `
+        <div class="result-card" onclick="showDetail(${s.id})" role="button" tabindex="0" aria-label="View ${s.name}">
+          <div class="match-score" aria-label="Relevance score ${s.score}%">
+            <span class="match-pct">${s.score}%</span>
+            <span class="match-label">பொருத்தம்</span>
+          </div>
+          <div class="result-info">
+            <div class="result-name">${i+1}. ${s.name}</div>
+            <div class="result-tamil">${s.nameTamil}</div>
+            <div class="result-why">${getWhyText(s, wizardData)}</div>
+            <div class="result-benefit">${s.benefit}</div>
+          </div>
+        </div>
+      `).join('')}
+      <div class="disclaimer" role="note">
+        ⚠️ பொருத்தம் சதவீதம் என்பது ஒரு வழிகாட்டுதல் மட்டுமே, இறுதி தகுதி அல்ல. அரசு திட்டங்களுக்கு இறுதி தகுதி சம்பந்தப்பட்ட அரசு துறையால் மட்டுமே தீர்மானிக்கப்படும்.
+      </div>
+    </div>
+  `;
+}
+
+function computeScore(scheme, data) {
+  let score = 50;
+  const role = data.role;
+  const income = parseInt(data.income) || 0;
+  const age = parseInt(data.age) || 0;
+  const cat = data.category;
+  const area = data.area;
+  const familyType = data.familyType;
+  const need = data.need;
+
+  if (role === 'student' && scheme.category === 'education') score += 35;
+  if (role === 'farmer' && scheme.category === 'agriculture') score += 35;
+  if (role === 'woman' && scheme.category === 'women') score += 35;
+  if ((role === 'entrepreneur' || role === 'jobseeker') && scheme.category === 'employment') score += 30;
+  if (role === 'jobseeker' && scheme.category === 'business') score += 20;
+  if (role === 'senior' && scheme.category === 'senior') score += 35;
+  if (scheme.category === 'health') score += 10;
+  if (need && scheme.category === need) score += 18;
+
+  if (area === 'rural' && (scheme.category === 'agriculture' || scheme.category === 'housing' || scheme.category === 'finance')) score += 12;
+  if (area === 'urban' && (scheme.category === 'employment' || scheme.category === 'business' || scheme.category === 'health')) score += 10;
+  if (area === 'remote' && scheme.category === 'housing') score += 15;
+
+  if (familyType === 'single-parent' && scheme.category === 'women') score += 14;
+  if (familyType === 'widow' && (scheme.category === 'women' || scheme.category === 'finance')) score += 16;
+  if (familyType === 'with-children' && (scheme.category === 'education' || scheme.category === 'health')) score += 10;
+
+  if (income > 0 && income < 100000) score += 15;
+  else if (income >= 100000 && income < 250000) score += 10;
+  else if (income >= 250000) score -= 10;
+
+  if ((cat === 'sc' || cat === 'st') && (scheme.name.includes('SC') || scheme.name.includes('Adi Dravidar') || scheme.name.includes('Tribal'))) score += 20;
+  if (cat === 'obc' && scheme.name.includes('OBC')) score += 15;
+
+  if (age >= 60 && scheme.category === 'senior') score += 20;
+  if (age < 30 && scheme.category === 'education') score += 10;
+  if (age >= 18 && age <= 35 && scheme.category === 'employment') score += 8;
+
+  if (data.state === 'tn' && scheme.level === 'State') score += 10;
+
+  return Math.min(99, Math.max(25, score));
+}
+
+function getWhyText(s, data) {
+  const role = data.role;
+  const need = data.need;
+  const area = data.area;
+  if (role === 'student' && s.category === 'education') return 'உங்கள் மாணவர் நிலையின் படி பொருத்தமானது';
+  if (role === 'farmer' && s.category === 'agriculture') return 'விவசாயியாக இருப்பதால் நேரடியாக பொருந்துகிறது';
+  if (role === 'woman' && s.category === 'women') return 'பெண்களுக்கான சிறப்பு திட்டம்';
+  if (role === 'senior' && s.category === 'senior') return 'மூத்த குடிமக்களுக்கான திட்டம்';
+  if (need && s.category === need) return 'உங்கள் முக்கிய தேவைக்கு ஏற்ற திட்டம்';
+  if (area === 'rural' && (s.category === 'agriculture' || s.category === 'housing')) return 'கிராமப்புற சூழலுக்கு பொருத்தமானது';
+  const income = parseInt(data.income) || 0;
+  if (income < 250000) return 'வருமான தகுதியை பூர்த்தி செய்கிறீர்கள்';
+  return 'உங்கள் சுயவிவரத்திற்கு பொருந்தும் திட்டம்';
+}
+
+// ===== START =====
+init();
+</script>
